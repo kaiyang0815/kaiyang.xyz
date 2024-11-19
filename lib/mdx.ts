@@ -65,7 +65,15 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
           ],
           rehypePlugins: [
             rehypeSlug, // Add IDs to headings
-            [rehypeAutolinkHeadings, { behavior: "append" }], // Add anchor links
+            [
+              rehypeAutolinkHeadings,
+              {
+                behavior: 'wrap',
+                properties: {
+                  className: ['anchor'],
+                },
+              },
+            ],
             [
               rehypeHighlight,
               {
