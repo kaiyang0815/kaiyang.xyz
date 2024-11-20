@@ -12,7 +12,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useState } from "react";
-import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);

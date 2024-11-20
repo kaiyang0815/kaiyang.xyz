@@ -50,7 +50,7 @@ export default function Home() {
 
         <div className="space-y-4">
           <p className="text-lg leading-relaxed">
-            Hi! I'm Kaiyang, a software engineer passionate about technology and
+            Hi! I&apos;m Kaiyang, a software engineer passionate about technology and
             innovation. This is my personal space where I share technical
             insights, learning experiences, and personal projects.
           </p>
