@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { getPostBySlug } from "@/lib/mdx";
+import { getWeeklyPostBySlug } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import { MotionDiv } from "@/components/motion-wrapper";
 import { cn } from "@/lib/utils";
@@ -39,9 +39,9 @@ function TableOfContents({ items, className }: TableOfContentsProps) {
   );
 }
 
-export default async function BlogPost({ params }: Props) {
+export default async function WeeklyPost({ params }: Props) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getWeeklyPostBySlug(slug);
 
   if (!post) {
     notFound();
@@ -68,11 +68,11 @@ export default async function BlogPost({ params }: Props) {
           )}
         </div>
         <Link
-          href="/blog"
+          href="/weekly"
           className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Articles
+          Back to Weekly Updates
         </Link>
 
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-16">

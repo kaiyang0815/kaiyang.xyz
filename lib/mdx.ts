@@ -11,12 +11,14 @@ import remarkGfm from "remark-gfm";
 import React from "react";
 
 const postsDirectory = path.join(process.cwd(), "content/blog");
+const weeklyDirectory = path.join(process.cwd(), "content/weekly");
 
 export type BlogPost = {
   slug: string;
   title: string;
   date: string;
   description: string;
+  headerImage?: string;
   content: React.ReactElement;
   toc?: TableOfContents[];
 };
@@ -32,6 +34,7 @@ type MDXContent = {
     title: string;
     date: string;
     description?: string;
+    headerImage?: string;
     [key: string]: string | number | boolean | undefined;
   };
 };
@@ -116,10 +119,102 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       title: data.title,
       date: data.date,
       description: data.description,
+      headerImage: data.headerImage,
       toc,
     };
   } catch (error) {
     console.error(`Error reading blog post ${slug}:`, error);
+    return null;
+  }
+}
+
+export async function getAllWeeklyPosts(): Promise<BlogPost[]> {
+  try {
+    const fileNames = fs.readdirSync(weeklyDirectory);
+    const allWeeklyData = await Promise.all(
+      fileNames.map(async (fileName) => {
+        const slug = fileName.replace(/\.mdx$/, "");
+        const post = await getWeeklyPostBySlug(slug);
+        return post;
+      })
+    );
+
+    return allWeeklyData
+      .filter((post): post is BlogPost => post !== null)
+      .sort((a, b) => (a.date < b.date ? 1 : -1));
+  } catch (error) {
+    console.error("Error reading weekly posts:", error);
+    return [];
+  }
+}
+
+export async function getWeeklyPostBySlug(
+  slug: string
+): Promise<BlogPost | null> {
+  try {
+    const fullPath = path.join(weeklyDirectory, `${slug}.mdx`);
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+    const { data, content } = matter(fileContents);
+
+    // Process the MDX content with enhanced features
+    const { content: processedContent } = await compileMDX<MDXContent>({
+      source: content,
+      options: {
+        parseFrontmatter: true,
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+          rehypePlugins: [
+            rehypeSlug,
+            [
+              rehypeAutolinkHeadings,
+              {
+                behavior: "wrap",
+                properties: {
+                  className: ["anchor"],
+                },
+              },
+            ],
+            [
+              rehypeHighlight,
+              {
+                detect: true,
+                ignoreMissing: true,
+                subset: false,
+              },
+            ],
+          ],
+        },
+      },
+    });
+
+    const headingLines = content
+      .split("\n")
+      .filter((line) => line.match(/^#{1,3} /));
+
+    const toc = headingLines
+      .map((line) => {
+        const match = line.match(/^(#{1,3})\s+(.*)$/);
+        if (!match) return null;
+        const [, hashes, title] = match;
+        return {
+          title: title,
+          url: `#${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+          depth: hashes.length,
+        };
+      })
+      .filter((item): item is TableOfContents => item !== null);
+
+    return {
+      slug,
+      title: data.title,
+      date: data.date,
+      description: data.description || "",
+      headerImage: data.headerImage,
+      content: processedContent,
+      toc: toc.length > 0 ? toc : undefined,
+    };
+  } catch (error) {
+    console.error(`Error processing weekly post ${slug}:`, error);
     return null;
   }
 }

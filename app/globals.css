@@ -110,14 +110,14 @@ body {
   .prose h2::before,
   .prose h3::before,
   .prose h4::before {
-    @apply absolute -left-5 opacity-0 transition-opacity content-['#'];
+    content: none;
   }
 
   .prose h1:hover::before,
   .prose h2:hover::before,
   .prose h3:hover::before,
   .prose h4:hover::before {
-    @apply opacity-50;
+    content: none;
   }
 
   .anchor {
@@ -129,7 +129,7 @@ body {
   }
 
   .anchor:after {
-    @apply ml-2 opacity-0 transition-opacity content-['#'] hover:opacity-100;
+    content: none;
   }
 }
 
@@ -385,19 +385,7 @@ pre code.hljs {
   @apply mt-4 scroll-m-20 text-base font-semibold tracking-tight;
 }
 
-/* Add anchor links to headings */
-.mdx-content :is(h1, h2, h3, h4, h5, h6) {
-  @apply flex items-center gap-2;
-}
-
+/* Remove the hover styles for headings */
 .mdx-content :is(h1, h2, h3, h4, h5, h6) a {
-  @apply inline-flex;
-}
-
-.mdx-content :is(h1, h2, h3, h4, h5, h6):hover a {
-  @apply opacity-100;
-}
-
-.mdx-content :is(h1, h2, h3, h4, h5, h6) a {
-  @apply opacity-0 transition-opacity hover:text-muted-foreground;
+  display: none;
 }
