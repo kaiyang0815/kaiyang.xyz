@@ -9,7 +9,6 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import React from "react";
-import { visit } from 'unist-util-visit';
 
 const postsDirectory = path.join(process.cwd(), "content/blog");
 
@@ -26,6 +25,15 @@ export type TableOfContents = {
   title: string;
   url: string;
   depth: number;
+};
+
+type MDXContent = {
+  frontmatter: {
+    title: string;
+    date: string;
+    description?: string;
+    [key: string]: any;
+  };
 };
 
 export async function getAllPosts(): Promise<BlogPost[]> {
@@ -55,22 +63,20 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     const { data, content } = matter(fileContents);
 
     // Process the MDX content with enhanced features
-    const { content: processedContent } = await compileMDX<any>({
+    const { content: processedContent } = await compileMDX<MDXContent>({
       source: content,
       options: {
         parseFrontmatter: true,
         mdxOptions: {
-          remarkPlugins: [
-            remarkGfm,
-          ],
+          remarkPlugins: [remarkGfm],
           rehypePlugins: [
             rehypeSlug, // Add IDs to headings
             [
               rehypeAutolinkHeadings,
               {
-                behavior: 'wrap',
+                behavior: "wrap",
                 properties: {
-                  className: ['anchor'],
+                  className: ["anchor"],
                 },
               },
             ],
@@ -84,7 +90,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
             ],
           ],
         },
-      }
+      },
     });
 
     // Extract headings for table of contents

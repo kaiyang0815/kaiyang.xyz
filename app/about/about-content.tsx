@@ -22,8 +22,8 @@ export default function AboutContent() {
 
       <div className="prose dark:prose-invert max-w-none prose-sm sm:prose-base">
         <p className="text-lg sm:text-xl mb-4 sm:mb-6">
-          Hi, I'm Kaiyang. I'm a software engineer passionate about building
-          things and sharing knowledge.
+          Hi, I&apos;m Kaiyang. I&apos;m a software engineer passionate about
+          building things and sharing knowledge.
         </p>
 
         <h2 className="text-xl sm:text-2xl font-bold mt-8 sm:mt-12 mb-3 sm:mb-4">

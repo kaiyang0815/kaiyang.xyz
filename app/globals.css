@@ -69,7 +69,10 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     @apply relative scroll-m-20;
   }
 
@@ -89,11 +92,17 @@ body {
     @apply mt-8 text-xl font-semibold tracking-tight;
   }
 
-  h1::before, h2::before, h3::before, h4::before {
+  h1::before,
+  h2::before,
+  h3::before,
+  h4::before {
     @apply absolute -left-5 opacity-0 transition-opacity content-['#'];
   }
 
-  h1:hover::before, h2:hover::before, h3:hover::before, h4:hover::before {
+  h1:hover::before,
+  h2:hover::before,
+  h3:hover::before,
+  h4:hover::before {
     @apply opacity-50;
   }
 
