@@ -32,7 +32,7 @@ type MDXContent = {
     title: string;
     date: string;
     description?: string;
-    [key: string]: any;
+    [key: string]: string | number | boolean | undefined;
   };
 };
 
