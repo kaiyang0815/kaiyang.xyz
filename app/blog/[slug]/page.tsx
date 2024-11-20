@@ -5,10 +5,16 @@ import { notFound } from "next/navigation";
 import { MotionDiv } from "@/components/motion-wrapper";
 import { cn } from "@/lib/utils";
 
-function TableOfContents({ items, className }: { 
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+interface TableOfContentsProps {
   items: { title: string; url: string; depth: number }[];
   className?: string;
-}) {
+}
+
+function TableOfContents({ items, className }: TableOfContentsProps) {
   return (
     <div className={cn("space-y-2", className)}>
       <h2 className="font-semibold mb-4">目录</h2>
@@ -32,8 +38,9 @@ function TableOfContents({ items, className }: {
   );
 }
 
-export default async function BlogPost({ params }: { params: { slug: string } }) {
-  const post = await getPostBySlug(params.slug);
+export default async function BlogPost({ params }: Props) {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();

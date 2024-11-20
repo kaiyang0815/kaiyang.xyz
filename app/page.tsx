@@ -50,9 +50,9 @@ export default function Home() {
 
         <div className="space-y-4">
           <p className="text-lg leading-relaxed">
-            Hi! I&apos;m Kaiyang, a software engineer passionate about technology and
-            innovation. This is my personal space where I share technical
-            insights, learning experiences, and personal projects.
+            Hi! I&apos;m Kaiyang, a software engineer passionate about
+            technology and innovation. This is my personal space where I share
+            technical insights, learning experiences, and personal projects.
           </p>
         </div>
 
@@ -90,7 +90,7 @@ export default function Home() {
           </Link>
         </div>
         <div className="space-y-5">
-          {recentPosts.map((post, index) => (
+          {recentPosts.map((post) => (
             <motion.div key={post.slug}>
               <Link href={`/blog/${post.slug}`}>
                 <Card className="p-6 hover:bg-muted/50 transition-colors">
@@ -116,7 +116,7 @@ export default function Home() {
       <motion.section className="max-w-3xl mx-auto">
         <h2 className="text-3xl font-bold mb-8">Featured Projects</h2>
         <div className="grid sm:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <motion.div key={project.title}>
               <Link href={project.link}>
                 <Card className="p-6 h-full hover:bg-muted/50 transition-colors">
