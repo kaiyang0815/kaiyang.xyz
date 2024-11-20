@@ -2,26 +2,379 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
   }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4 {
+    @apply relative scroll-m-20;
+  }
+
+  h1 {
+    @apply text-4xl font-extrabold tracking-tight lg:text-5xl;
+  }
+
+  h2 {
+    @apply mt-10 text-3xl font-semibold tracking-tight first:mt-0;
+  }
+
+  h3 {
+    @apply mt-8 text-2xl font-semibold tracking-tight;
+  }
+
+  h4 {
+    @apply mt-8 text-xl font-semibold tracking-tight;
+  }
+
+  h1::before, h2::before, h3::before, h4::before {
+    @apply absolute -left-5 opacity-0 transition-opacity content-['#'];
+  }
+
+  h1:hover::before, h2:hover::before, h3:hover::before, h4:hover::before {
+    @apply opacity-50;
+  }
+
+  .anchor {
+    @apply scroll-m-20;
+  }
+
+  .anchor:hover {
+    @apply no-underline;
+  }
+
+  .anchor:after {
+    @apply ml-2 opacity-0 transition-opacity content-['#'] hover:opacity-100;
+  }
+}
+
+@layer components {
+  /* Base prose styles */
+  .prose {
+    @apply max-w-none text-base leading-relaxed text-zinc-600 dark:text-zinc-400;
+  }
+
+  /* Headings */
+  .prose :is(h1, h2, h3, h4, h5) {
+    @apply text-zinc-900 dark:text-zinc-100 font-semibold no-underline border-none tracking-tight;
+  }
+
+  .prose h1 {
+    @apply text-3xl lg:text-4xl mt-12 mb-6;
+  }
+
+  .prose h2 {
+    @apply text-2xl lg:text-3xl mt-10 mb-4;
+  }
+
+  .prose h3 {
+    @apply text-xl lg:text-2xl mt-8 mb-3;
+  }
+
+  .prose h4 {
+    @apply text-lg lg:text-xl mt-6 mb-2;
+  }
+
+  .prose h5 {
+    @apply text-base lg:text-lg mt-4 mb-2;
+  }
+
+  /* Paragraphs */
+  .prose p {
+    @apply mb-6 leading-relaxed;
+  }
+
+  /* Links */
+  .prose a {
+    @apply text-primary font-medium no-underline hover:underline decoration-primary/30 underline-offset-4 transition-colors;
+  }
+
+  /* Lists */
+  .prose :is(ul, ol) {
+    @apply my-6 pl-8 space-y-3;
+  }
+
+  .prose ul {
+    @apply list-none;
+  }
+
+  .prose ul > li {
+    @apply relative pl-5;
+  }
+
+  .prose ul > li::before {
+    content: "";
+    @apply absolute left-0 top-[0.6em] w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-600;
+  }
+
+  .prose ol {
+    @apply list-none;
+    counter-reset: list-counter;
+  }
+
+  .prose ol > li {
+    @apply relative pl-8;
+    counter-increment: list-counter;
+  }
+
+  .prose ol > li::before {
+    content: counter(list-counter) ".";
+    @apply absolute left-0 top-0 text-zinc-500 dark:text-zinc-400 font-medium;
+  }
+
+  /* Nested lists */
+  .prose :is(ul, ol) :is(ul, ol) {
+    @apply my-2 pl-5;
+  }
+
+  /* Blockquotes */
+  .prose blockquote {
+    @apply my-8 pl-6 italic border-l-2 border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400;
+  }
+
+  .prose blockquote p {
+    @apply mb-0;
+  }
+
+  /* Code */
+  .prose :not(pre) > code {
+    @apply relative rounded bg-zinc-100 dark:bg-zinc-800 px-[0.4em] py-[0.2em] font-mono text-sm text-zinc-900 dark:text-zinc-200;
+  }
+
+  .prose pre {
+    @apply my-8 overflow-x-auto rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4;
+  }
+
+  .prose pre code {
+    @apply text-sm font-normal text-zinc-900 dark:text-zinc-200;
+  }
+
+  /* Tables */
+  .prose table {
+    @apply my-8 w-full text-sm border-collapse;
+  }
+
+  .prose tr {
+    @apply border-b border-zinc-200 dark:border-zinc-800;
+  }
+
+  .prose th {
+    @apply px-4 py-3 text-left font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-50 dark:bg-zinc-800/50;
+  }
+
+  .prose td {
+    @apply px-4 py-3 text-zinc-600 dark:text-zinc-400;
+  }
+
+  /* Images */
+  .prose img {
+    @apply my-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-800;
+  }
+
+  .prose figure {
+    @apply my-10;
+  }
+
+  .prose figure figcaption {
+    @apply mt-3 text-center text-sm text-zinc-500 dark:text-zinc-400;
+  }
+
+  /* Horizontal Rule */
+  .prose hr {
+    @apply my-12 border-zinc-200 dark:border-zinc-800;
+  }
+
+  /* Strong and Emphasis */
+  .prose strong {
+    @apply font-semibold text-zinc-900 dark:text-zinc-200;
+  }
+
+  .prose em {
+    @apply italic text-zinc-800 dark:text-zinc-300;
+  }
+}
+
+/* Syntax Highlighting */
+pre code.hljs {
+  @apply block overflow-x-auto p-4 rounded-lg;
+}
+
+.hljs {
+  @apply bg-secondary text-foreground;
+}
+
+.hljs-comment,
+.hljs-quote {
+  @apply text-muted-foreground italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  @apply font-bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-built_in {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+.hljs-string,
+.hljs-doctag,
+.hljs-regexp {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  @apply text-purple-600 dark:text-purple-400 font-bold;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  @apply text-yellow-600 dark:text-yellow-400 font-bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  @apply text-blue-600 dark:text-blue-400 font-bold;
+}
+
+.hljs-function .hljs-title {
+  @apply text-blue-600 dark:text-blue-400 font-bold;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  @apply text-purple-600 dark:text-purple-400;
+}
+
+.hljs-deletion,
+.hljs-meta {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.hljs-addition {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.hljs-emphasis {
+  @apply italic;
+}
+
+.hljs-strong {
+  @apply font-bold;
+}
+
+/* MDX Content Styles */
+.mdx-content {
+  @apply max-w-none;
+}
+
+.mdx-content h1 {
+  @apply mt-12 scroll-m-20 text-4xl font-bold tracking-tight;
+}
+
+.mdx-content h2 {
+  @apply mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0;
+}
+
+.mdx-content h3 {
+  @apply mt-8 scroll-m-20 text-2xl font-semibold tracking-tight;
+}
+
+.mdx-content h4 {
+  @apply mt-6 scroll-m-20 text-xl font-semibold tracking-tight;
+}
+
+.mdx-content h5 {
+  @apply mt-4 scroll-m-20 text-lg font-semibold tracking-tight;
+}
+
+.mdx-content h6 {
+  @apply mt-4 scroll-m-20 text-base font-semibold tracking-tight;
+}
+
+/* Add anchor links to headings */
+.mdx-content :is(h1, h2, h3, h4, h5, h6) {
+  @apply flex items-center gap-2;
+}
+
+.mdx-content :is(h1, h2, h3, h4, h5, h6) a {
+  @apply inline-flex;
+}
+
+.mdx-content :is(h1, h2, h3, h4, h5, h6):hover a {
+  @apply opacity-100;
+}
+
+.mdx-content :is(h1, h2, h3, h4, h5, h6) a {
+  @apply opacity-0 transition-opacity hover:text-muted-foreground;
 }
