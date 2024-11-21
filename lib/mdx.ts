@@ -19,6 +19,7 @@ export type BlogPost = {
   date: string;
   description: string;
   headerImage?: string;
+  tags?: string[];
   content: React.ReactElement;
   toc?: TableOfContents[];
 };
@@ -35,7 +36,8 @@ type MDXContent = {
     date: string;
     description?: string;
     headerImage?: string;
-    [key: string]: string | number | boolean | undefined;
+    tags?: string[];
+    [key: string]: string | number | boolean | string[] | undefined;
   };
 };
 
@@ -120,6 +122,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       date: data.date,
       description: data.description,
       headerImage: data.headerImage,
+      tags: data.tags,
       toc,
     };
   } catch (error) {
@@ -210,6 +213,7 @@ export async function getWeeklyPostBySlug(
       date: data.date,
       description: data.description || "",
       headerImage: data.headerImage,
+      tags: data.tags,
       content: processedContent,
       toc: toc.length > 0 ? toc : undefined,
     };
@@ -217,4 +221,11 @@ export async function getWeeklyPostBySlug(
     console.error(`Error processing weekly post ${slug}:`, error);
     return null;
   }
+}
+
+export async function getLatestPosts(count: number = 5): Promise<BlogPost[]> {
+  const allPosts = await getAllPosts();
+  return allPosts
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, count);
 }

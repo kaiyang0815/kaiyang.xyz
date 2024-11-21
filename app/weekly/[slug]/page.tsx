@@ -4,6 +4,7 @@ import Image from "next/image";
 import { getWeeklyPostBySlug } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import { MotionDiv } from "@/components/motion-wrapper";
+import { Tag } from "@/components/tag";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -79,7 +80,16 @@ export default async function WeeklyPost({ params }: Props) {
           <article className="space-y-8">
             <header className="space-y-4">
               <h1 className="text-4xl font-bold">{post.title}</h1>
-              <time className="text-muted-foreground">{post.date}</time>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+                <time className="text-muted-foreground">{post.date}</time>
+                {post.tags && post.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
+                  </div>
+                )}
+              </div>
             </header>
 
             <div className="prose prose-neutral dark:prose-invert max-w-none prose-pre:p-0 prose-pre:bg-transparent">
