@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer base {
@@ -67,29 +69,29 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground text-base leading-relaxed;
   }
   h1,
   h2,
   h3,
   h4 {
-    @apply relative scroll-m-20;
+    @apply relative scroll-m-20 font-bold text-zinc-900 dark:text-zinc-50;
   }
 
   h1 {
-    @apply text-4xl font-extrabold tracking-tight lg:text-5xl;
+    @apply text-4xl font-extrabold tracking-tight lg:text-5xl mb-8;
   }
 
   h2 {
-    @apply mt-10 text-3xl font-semibold tracking-tight first:mt-0;
+    @apply mt-12 text-3xl tracking-tight first:mt-0 mb-6;
   }
 
   h3 {
-    @apply mt-8 text-2xl font-semibold tracking-tight;
+    @apply mt-10 text-2xl tracking-tight mb-4;
   }
 
   h4 {
-    @apply mt-8 text-xl font-semibold tracking-tight;
+    @apply mt-8 text-xl tracking-tight mb-4;
   }
 
   h1::before,
@@ -136,47 +138,47 @@ body {
 @layer components {
   /* Base prose styles */
   .prose {
-    @apply max-w-none text-base leading-relaxed text-zinc-600 dark:text-zinc-400;
+    @apply max-w-none text-base leading-7 text-zinc-700 dark:text-zinc-300;
   }
 
   /* Headings */
   .prose :is(h1, h2, h3, h4, h5) {
-    @apply text-zinc-900 dark:text-zinc-100 font-semibold no-underline border-none tracking-tight;
+    @apply text-zinc-900 dark:text-zinc-50 font-bold no-underline border-none tracking-tight;
   }
 
   .prose h1 {
-    @apply text-3xl lg:text-4xl mt-12 mb-6;
+    @apply text-4xl lg:text-5xl mt-12 mb-8 leading-tight;
   }
 
   .prose h2 {
-    @apply text-2xl lg:text-3xl mt-10 mb-4;
+    @apply text-3xl lg:text-4xl mt-12 mb-6 leading-tight;
   }
 
   .prose h3 {
-    @apply text-xl lg:text-2xl mt-8 mb-3;
+    @apply text-2xl lg:text-3xl mt-10 mb-4;
   }
 
   .prose h4 {
-    @apply text-lg lg:text-xl mt-6 mb-2;
+    @apply text-xl lg:text-2xl mt-8 mb-4;
   }
 
   .prose h5 {
-    @apply text-base lg:text-lg mt-4 mb-2;
+    @apply text-lg lg:text-xl mt-6 mb-3;
   }
 
   /* Paragraphs */
   .prose p {
-    @apply mb-6 leading-relaxed;
+    @apply mb-6 leading-7 text-zinc-700 dark:text-zinc-300;
   }
 
   /* Links */
   .prose a {
-    @apply text-primary font-medium no-underline hover:underline decoration-primary/30 underline-offset-4 transition-colors;
+    @apply text-primary font-medium no-underline hover:underline decoration-2 decoration-primary/30 underline-offset-4 transition-colors;
   }
 
   /* Lists */
   .prose :is(ul, ol) {
-    @apply my-6 pl-8 space-y-3;
+    @apply my-6 pl-6 space-y-3;
   }
 
   .prose ul {
@@ -184,12 +186,12 @@ body {
   }
 
   .prose ul > li {
-    @apply relative pl-5;
+    @apply relative pl-4 leading-7;
   }
 
   .prose ul > li::before {
     content: "";
-    @apply absolute left-0 top-[0.6em] w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-600;
+    @apply absolute left-0 top-[0.7em] w-1.5 h-1.5 rounded-full bg-zinc-500 dark:bg-zinc-400;
   }
 
   .prose ol {
@@ -198,7 +200,7 @@ body {
   }
 
   .prose ol > li {
-    @apply relative pl-8;
+    @apply relative pl-5 leading-7;
     counter-increment: list-counter;
   }
 
