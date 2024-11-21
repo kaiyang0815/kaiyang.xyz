@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -138,12 +139,12 @@ body {
 @layer components {
   /* Base prose styles */
   .prose {
-    @apply max-w-none text-base leading-7 text-zinc-700 dark:text-zinc-300;
+    @apply max-w-none text-base leading-7 text-foreground;
   }
 
   /* Headings */
   .prose :is(h1, h2, h3, h4, h5) {
-    @apply text-zinc-900 dark:text-zinc-50 font-bold no-underline border-none tracking-tight;
+    @apply text-foreground font-bold no-underline border-none tracking-tight;
   }
 
   .prose h1 {
@@ -168,7 +169,7 @@ body {
 
   /* Paragraphs */
   .prose p {
-    @apply mb-6 leading-7 text-zinc-700 dark:text-zinc-300;
+    @apply mb-6 leading-7 text-foreground;
   }
 
   /* Links */
@@ -191,7 +192,7 @@ body {
 
   .prose ul > li::before {
     content: "";
-    @apply absolute left-0 top-[0.7em] w-1.5 h-1.5 rounded-full bg-zinc-500 dark:bg-zinc-400;
+    @apply absolute left-0 top-[0.7em] w-1.5 h-1.5 rounded-full bg-muted-foreground;
   }
 
   .prose ol {
@@ -229,7 +230,7 @@ body {
   }
 
   .prose pre {
-    @apply my-8 overflow-x-auto rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4;
+    @apply my-8 overflow-x-auto rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4 relative;
   }
 
   .prose pre code {
@@ -292,7 +293,7 @@ pre code.hljs {
 
 .hljs-comment,
 .hljs-quote {
-  @apply text-muted-foreground italic;
+  @apply text-muted-foreground italic text-neutral-400;
 }
 
 .hljs-keyword,

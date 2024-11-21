@@ -9,6 +9,8 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import React from "react";
+import { rehypeCopyButton } from "./rehype-copy-button";
+import { CopyButton } from "@/components/copy-button";
 
 const postsDirectory = path.join(process.cwd(), "content/blog");
 const weeklyDirectory = path.join(process.cwd(), "content/weekly");
@@ -39,6 +41,10 @@ type MDXContent = {
     tags?: string[];
     [key: string]: string | number | boolean | string[] | undefined;
   };
+};
+
+const components = {
+  CopyButton,
 };
 
 export async function getAllPosts(): Promise<BlogPost[]> {
@@ -93,9 +99,11 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
                 subset: false,
               },
             ],
+            rehypeCopyButton,
           ],
         },
       },
+      components,
     });
 
     // Extract headings for table of contents
@@ -185,9 +193,11 @@ export async function getWeeklyPostBySlug(
                 subset: false,
               },
             ],
+            rehypeCopyButton,
           ],
         },
       },
+      components,
     });
 
     const headingLines = content
