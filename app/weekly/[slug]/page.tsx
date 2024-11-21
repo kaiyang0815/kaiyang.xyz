@@ -1,9 +1,10 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { getPostBySlug } from "@/lib/mdx";
+import { getWeeklyPostBySlug } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import { MotionDiv } from "@/components/motion-wrapper";
+import { Tag } from "@/components/tag";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -39,9 +40,9 @@ function TableOfContents({ items, className }: TableOfContentsProps) {
   );
 }
 
-export default async function BlogPost({ params }: Props) {
+export default async function WeeklyPost({ params }: Props) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getWeeklyPostBySlug(slug);
 
   if (!post) {
     notFound();
@@ -68,18 +69,27 @@ export default async function BlogPost({ params }: Props) {
           )}
         </div>
         <Link
-          href="/blog"
+          href="/weekly"
           className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Articles
+          Back to Weekly Updates
         </Link>
 
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-16">
           <article className="space-y-8">
             <header className="space-y-4">
               <h1 className="text-4xl font-bold">{post.title}</h1>
-              <time className="text-muted-foreground">{post.date}</time>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+                <time className="text-muted-foreground">{post.date}</time>
+                {post.tags && post.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
+                  </div>
+                )}
+              </div>
             </header>
 
             <div className="prose prose-neutral dark:prose-invert max-w-none prose-pre:p-0 prose-pre:bg-transparent">

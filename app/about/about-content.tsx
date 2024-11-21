@@ -25,10 +25,7 @@ export default function AboutContent() {
           Hi, I&apos;m Kaiyang. I&apos;m a software engineer passionate about
           building things and sharing knowledge.
         </p>
-
-        <h2 className="text-xl sm:text-2xl font-bold mt-8 sm:mt-12 mb-3 sm:mb-4">
-          Background
-        </h2>
+        <h2 className="text-3xl font-bold">Background</h2>
         {/* ... background content ... */}
 
         {/* 技能标签部分 */}

@@ -11,10 +11,29 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY < 100) {
+        setVisible(true);
+      } else {
+        setVisible(currentScrollY < lastScrollY);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", controlNavbar);
+    return () => {
+      window.removeEventListener("scroll", controlNavbar);
+    };
+  }, [lastScrollY]);
 
   const navItems = [
     { href: "/blog", label: "Blog" },
@@ -24,7 +43,11 @@ export default function NavBar() {
   ];
 
   return (
-    <div className="border-b">
+    <div
+      className={`fixed top-0 left-0 right-0 z-50 bg-background border-b transition-transform duration-300 ${
+        visible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div className="flex h-16 items-center px-4 container mx-auto">
         <Link
           href="/"
