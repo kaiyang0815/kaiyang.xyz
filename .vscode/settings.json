@@ -1,6 +1,5 @@
 {
-  "cSpell.words": [
-    "kaiyang",
-    "kaiyang's"
-  ]
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }
