@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 
 const skills = [
   "React",
@@ -17,22 +18,24 @@ const skills = [
   "Git",
 ];
 
-const interests = [
-  {
-    area: "Frontend Development",
-    details: "Modern web frameworks, responsive design, and user experience",
-  },
-  {
-    area: "iOS Development",
-    details: "Native iOS apps, SwiftUI, and mobile user interfaces",
-  },
-  {
-    area: "UI/UX Design",
-    details: "Creating intuitive and beautiful user interfaces",
-  },
-];
-
 export default function AboutContent() {
+  const t = useTranslations("about");
+
+  const interests = [
+    {
+      area: t("interests.frontend.title"),
+      details: t("interests.frontend.description"),
+    },
+    {
+      area: t("interests.ios.title"),
+      details: t("interests.ios.description"),
+    },
+    {
+      area: t("interests.uiux.title"),
+      details: t("interests.uiux.description"),
+    },
+  ];
+
   return (
     <div className="container max-w-3xl mx-auto py-6 px-4 sm:py-10">
       <motion.h1
@@ -41,7 +44,7 @@ export default function AboutContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        About Me
+        {t("title")}
       </motion.h1>
 
       <div className="prose dark:prose-invert max-w-none prose-sm sm:prose-base">
@@ -51,9 +54,7 @@ export default function AboutContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Hi, I&apos;m Kaiyang. I&apos;m a software engineer passionate about
-          creating beautiful and intuitive user experiences through web and iOS
-          development.
+          {t("intro")}
         </motion.p>
 
         <motion.section
@@ -61,19 +62,9 @@ export default function AboutContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Background</h2>
-          <p className="mb-4">
-            As a recent graduate turned software engineer, I&apos;m at the
-            beginning of my exciting journey in tech. With less than a year of
-            professional experience, I&apos;ve already discovered my passion for
-            creating engaging user interfaces and seamless user experiences.
-          </p>
-          <p className="mb-4">
-            I split my time between frontend web development and iOS app
-            development, constantly learning and exploring new technologies in
-            both domains. I believe in writing clean, maintainable code and
-            creating applications that users love to interact with.
-          </p>
+          <h2 className="text-2xl font-bold mb-4">{t("background.title")}</h2>
+          <p className="mb-4">{t("background.description1")}</p>
+          <p className="mb-4">{t("background.description2")}</p>
         </motion.section>
 
         <motion.section
@@ -82,7 +73,7 @@ export default function AboutContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <h2 className="text-2xl font-bold mb-6">Areas of Interest</h2>
+          <h2 className="text-2xl font-bold mb-6">{t("interests.title")}</h2>
           <div className="space-y-6">
             {interests.map((item, index) => (
               <motion.div
@@ -107,7 +98,7 @@ export default function AboutContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <h2 className="text-2xl font-bold mb-6">Skills & Tools</h2>
+          <h2 className="text-2xl font-bold mb-6">{t("skills.title")}</h2>
           <div className="flex flex-wrap gap-2 not-prose">
             {skills.map((skill, index) => (
               <motion.div
@@ -133,12 +124,12 @@ export default function AboutContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Current Projects</h2>
-          <p className="mb-4">I&apos;m currently working on:</p>
+          <h2 className="text-2xl font-bold mb-4">{t("projects.title")}</h2>
+          <p className="mb-4">{t("projects.intro")}</p>
           <ul className="list-disc pl-5 space-y-2">
-            <li>Building this personal blog using Next.js and TailwindCSS</li>
-            <li>Learning SwiftUI and developing my first iOS app</li>
-            <li>Exploring modern frontend frameworks and best practices</li>
+            {t.raw("projects.items").map((item: string, index: number) => (
+              <li key={index}>{item}</li>
+            ))}
           </ul>
         </motion.section>
 
@@ -147,11 +138,8 @@ export default function AboutContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Contact</h2>
-          <p className="mb-4">
-            I&apos;m always excited to connect with fellow developers and learn
-            from the community. Feel free to reach out through:
-          </p>
+          <h2 className="text-2xl font-bold mb-4">{t("contact.title")}</h2>
+          <p className="mb-4">{t("contact.description")}</p>
           <ul className="list-disc pl-5 space-y-2">
             <li>
               <a

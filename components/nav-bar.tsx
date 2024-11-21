@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/utils/navigation";
 import { ModeToggle } from "@/components/mode-toggle";
+import { LanguageToggle } from "@/components/language-toggle";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import {
@@ -12,11 +13,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const t = useTranslations("nav");
 
   useEffect(() => {
     const controlNavbar = () => {
@@ -36,10 +39,10 @@ export default function NavBar() {
   }, [lastScrollY]);
 
   const navItems = [
-    { href: "/blog", label: "Blog" },
-    { href: "/weekly", label: "Weekly" },
-    { href: "/projects", label: "Projects" },
-    { href: "/about", label: "About" },
+    { href: "/blog", label: t("blog") },
+    { href: "/weekly", label: t("weekly") },
+    { href: "/projects", label: t("projects") },
+    { href: "/about", label: t("about") },
   ];
 
   return (
@@ -49,48 +52,56 @@ export default function NavBar() {
       }`}
     >
       <div className="flex h-16 items-center px-4 container mx-auto">
-        <Link
-          href="/"
-          className="font-bold text-xl hover:text-primary transition-colors"
-        >
-          {`Kaiyang's Notebook`}
+        <Link href="/" className="font-bold text-lg">
+          Kaiyang
         </Link>
 
-        {/* 桌面端导航 */}
-        <div className="ml-auto hidden md:flex items-center space-x-4">
+        {/* Desktop Navigation */}
+        <nav className="mx-6 hidden md:flex md:flex-1 gap-4">
           {navItems.map((item) => (
-            <Button key={item.href} variant="ghost" asChild>
-              <Link href={item.href}>{item.label}</Link>
-            </Button>
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              {item.label}
+            </Link>
           ))}
-          <ModeToggle />
-        </div>
+        </nav>
 
-        {/* 移动端导航 */}
-        <div className="ml-auto flex items-center space-x-4 md:hidden">
-          <ModeToggle />
+        <div className="flex items-center gap-2 ml-auto">
+          <div className="hidden md:flex items-center gap-2">
+            <LanguageToggle />
+            <ModeToggle />
+          </div>
+
+          {/* Mobile Navigation */}
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle menu</span>
+            <SheetTrigger asChild className="md:hidden">
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[240px] sm:w-[300px]">
+            <SheetContent side="right" className="w-64">
               <SheetHeader>
-                <SheetTitle>Navigation</SheetTitle>
+                <SheetTitle className="text-left">{t("navigation")}</SheetTitle>
               </SheetHeader>
-              <nav className="flex flex-col space-y-4 mt-8">
+              <nav className="flex flex-col gap-4 mt-4">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
+                    className="text-sm font-medium transition-colors hover:text-primary"
                     onClick={() => setOpen(false)}
-                    className="px-2 py-1 text-lg hover:text-primary transition-colors"
                   >
                     {item.label}
                   </Link>
                 ))}
+                <div className="flex items-center gap-2 pt-4">
+                  <LanguageToggle />
+                  <ModeToggle />
+                </div>
               </nav>
             </SheetContent>
           </Sheet>
