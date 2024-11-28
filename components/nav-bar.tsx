@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { Separator } from "@/components/ui/separator";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
@@ -57,27 +58,29 @@ export default function NavBar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="mx-6 hidden md:flex md:flex-1 gap-4">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2 ml-auto">
-          <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex md:flex-1 md:justify-end items-center gap-6">
+          <nav className="flex items-center gap-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm font-medium transition-colors hover:text-primary text-center"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <Separator orientation="vertical" />
+          <div className="flex items-center gap-2">
             <LanguageToggle />
             <ModeToggle />
           </div>
+        </div>
 
+        <div className="flex items-center gap-2 ml-auto md:hidden">
           {/* Mobile Navigation */}
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild className="md:hidden">
+            <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle Menu</span>
@@ -87,12 +90,12 @@ export default function NavBar() {
               <SheetHeader>
                 <SheetTitle className="text-left">{t("navigation")}</SheetTitle>
               </SheetHeader>
-              <nav className="flex flex-col gap-4 mt-4">
+              <nav className="flex flex-col gap-4 mt-4 text-center">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-sm font-medium transition-colors hover:text-primary"
+                    className="text-primary/65 text-sm font-medium transition-colors hover:text-primary"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}

@@ -42,7 +42,7 @@ export default function Home() {
               className="object-cover"
             />
           </div>
-          <h1 className="text-6xl font-black">Kaiyang WANG</h1>
+          <h1 className="md:text-6xl text-3xl font-black">Kaiyang WANG</h1>
           <p className="text-xl text-muted-foreground">
             Software Engineer / Lifelong Learner
           </p>
