@@ -1,31 +1,327 @@
 ---
-title: 'Spaces vs. Tabs: The Indentation Debate Continues'
-publishedAt: '2024-04-08'
+title: 'SwiftUI Drag to Select Multiple Items in Grid View'
+publishedAt: '2024-10-05'
 summary: 'Explore the enduring debate between using spaces and tabs for code indentation, and why this choice matters more than you might think.'
 ---
 
-The debate between using spaces and tabs for indentation in coding may seem trivial to the uninitiated, but it is a topic that continues to inspire passionate discussions among developers. This seemingly minor choice can affect code readability, maintenance, and even team dynamics.
+该视频利用UIGesture完成了类似于iOS相册应用的图片拖动多选功能。
 
-Let's delve into the arguments for both sides and consider why this debate remains relevant in the software development world.
+## safeAreaPadding modifier
 
-## The Case for Spaces
+## Binding 类型
 
-Advocates for using spaces argue that it ensures consistent code appearance across different editors, tools, and platforms. Because a space is a universally recognized character with a consistent width, code indented with spaces will look the same no matter where it's viewed. This consistency is crucial for maintaining readability and avoiding formatting issues when code is shared between team members or published online.
+```swift
+@ViewBuilder
+func ItemCardView(_ binding: Binding<Item>) -> some View{
+    let item = binding.wrappedValue
 
-Additionally, some programming languages and style guides explicitly recommend spaces for indentation, suggesting a certain number of spaces (often two or four) per indentation level. Adhering to these recommendations can be essential for projects that aim for best practices in code quality and readability.
+    RoundedRectangle(cornerRadius: 10)
+        .fill(item.color.gradient)
+        .frame(height: 80)
+}
+```
 
-## The Case for Tabs
+## 多次选择内容的合并
 
-On the other side of the debate, proponents of tabs highlight the flexibility that tabs offer. Because the width of a tab can be adjusted in most text editors, individual developers can choose how much indentation they prefer to see, making the code more accessible and comfortable to read on a personal level. This adaptability can be particularly beneficial in teams with diverse preferences regarding code layout.
+使用并集操作符号利用集合类型的元素独一性完成：
 
-Tabs also have the advantage of semantic meaning. A tab is explicitly meant to represent indentation, whereas a space is used for many purposes within code. This distinction can make automated parsing and manipulation of code simpler, as tools can more easily recognize and adjust indentation levels without confusing them with spaces used for alignment.
+```swift
+if let start = properties.start, let end = properties.end {
+    let indices = (start > end ? end...start : start...end).compactMap({ $0 })
+    properties.selectedIndices = Set(properties.selectedIndices).union(indices).compactMap({ $0 })
+}
+```
 
-## Hybrid Approaches and Team Dynamics
+## 重复选中时，取消选择的效果
 
-The debate often extends into discussions about hybrid approaches, where teams might use tabs for indentation and spaces for alignment within lines, attempting to combine the best of both worlds. However, such strategies require clear team agreements and disciplined adherence to coding standards to prevent formatting chaos.
+## 全部代码
 
-Ultimately, the choice between spaces and tabs often comes down to team consensus and project guidelines. In environments where collaboration and code sharing are common, agreeing on a standard that everyone follows is more important than the individual preferences of spaces versus tabs. Modern development tools and linters can help enforce these standards, making the choice less about technical limitations and more about team dynamics and coding philosophy.
+```swift
+//
+//  Home.swift
+//  Drag to Select Multiple Items in Grid View
+//
+//  Created by kaiyang on 2024/10/5.
+//
 
-## Conclusion
+import SwiftUI
 
-While the spaces vs. tabs debate might not have a one-size-fits-all answer, it underscores the importance of consistency, readability, and team collaboration in software development. Whether a team chooses spaces, tabs, or a hybrid approach, the key is to make a conscious choice that serves the project's needs and to adhere to it throughout the codebase. As with many aspects of coding, communication and agreement among team members are paramount to navigating this classic programming debate.
+struct SelectionProperties {
+    var start: Int?
+    var end: Int?
+    var selectedIndices: [Int] = []
+    // 用于处理多次选择
+    var previousIndices: [Int] = []
+    var toBeDeletedIndices: [Int] = []
+    var isDeleteDrag: Bool = false
+}
+
+// 处理拖动到底部时自动滚动视图
+struct ScrollProperties {
+    var position: ScrollPosition = .init()
+    var currentScrollOffset: CGFloat = 0
+    var manualScrollOffset: CGFloat = 0
+    var timer: Timer?
+    var direction: ScrollDirction = .none
+    var topRegion: CGRect = .zero
+    var bottomRegion: CGRect = .zero
+}
+
+enum ScrollDirction {
+    case up
+    case down
+    case none
+}
+
+struct Home: View {
+    @State private var items: [Item] = []
+    @State private var isSelectedEnabled: Bool = false
+    @State private var panGesture: UIPanGestureRecognizer?
+    @State private var properties: SelectionProperties = .init()
+    @State private var scrollProperties: ScrollProperties = .init()
+
+    var body: some View {
+        ScrollView(.vertical) {
+            VStack(spacing: 20) {
+                Text("Grid View")
+                    .font(.title.bold())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay(alignment: .trailing) {
+                        Button(isSelectedEnabled ? "Cancel" : "Select") {
+                            isSelectedEnabled.toggle()
+
+                            if !isSelectedEnabled {
+                                properties = .init()
+                            }
+                        }
+                        .font(.caption)
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
+                    }
+                LazyVGrid(columns: Array(repeating: GridItem(), count: 4)) {
+                    ForEach($items) { $item in
+                        ItemCardView($item)
+                    }
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .safeAreaPadding(15)
+        .scrollPosition($scrollProperties.position)
+        .overlay(alignment: .top) {
+            ScrollDetectionRegion()
+        }
+        .overlay(alignment: .bottom) {
+            ScrollDetectionRegion(false)
+        }
+        .onAppear(perform: createSampleData)
+        .onChange(of: isSelectedEnabled) { oldValue, newValue in
+            panGesture?.isEnabled = newValue
+        }
+        .onScrollGeometryChange(
+            for: CGFloat.self,
+            of: { proxy in
+                proxy.contentOffset.y + proxy.contentInsets.top
+            },
+            action: { oldValue, newValue in
+                scrollProperties.currentScrollOffset = newValue
+            }
+        )
+        .onChange(
+            of: scrollProperties.direction,
+            { oldValue, newValue in
+                if newValue != .none {
+                    guard scrollProperties.timer == nil else { return }
+                    scrollProperties.manualScrollOffset =
+                        scrollProperties.currentScrollOffset
+
+                    scrollProperties.timer = Timer.scheduledTimer(
+                        withTimeInterval: 0.04, repeats: true,
+                        block: { _ in
+                            if newValue == .up {
+                                scrollProperties.manualScrollOffset += 3
+                            }
+                            if newValue == .down {
+                                scrollProperties.manualScrollOffset -= 3
+                            }
+                            scrollProperties.position.scrollTo(
+                                y: scrollProperties.manualScrollOffset)
+                        })
+                    scrollProperties.timer?.fire()
+                } else {
+                    resteTimer()
+                }
+            }
+        )
+        .gesture(
+            PanGesture { gesture in
+                if panGesture == nil {
+                    panGesture = gesture
+                    gesture.isEnabled = isSelectedEnabled
+                }
+
+                let state = gesture.state
+
+                if state == .began || state == .changed {
+                    onGestrueChange(gesture)
+                } else {
+                    onGestrueEnded(gesture)
+                }
+            }
+        )
+    }
+
+    @ViewBuilder
+    func ItemCardView(_ binding: Binding<Item>) -> some View {
+        let item = binding.wrappedValue
+
+        if let index = items.firstIndex(where: { $0.id == item.id }) {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(item.color.gradient)
+                .frame(height: 80)
+                .onGeometryChange(for: CGRect.self) { proxy in
+                    proxy.frame(in: .global)
+                } action: { newValue in
+                    binding.wrappedValue.location = newValue
+                }
+                .overlay(alignment: .topLeading) {
+                    if properties.selectedIndices.contains(index)
+                        && !properties.toBeDeletedIndices.contains(index)
+                    {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.title3)
+                            .foregroundStyle(.black, .white)
+                            .padding(5)
+                    }
+                }
+                .overlay {
+                    if isSelectedEnabled {
+                        Rectangle()
+                            .foregroundStyle(.clear)
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                if properties.selectedIndices.contains(index) {
+                                    properties.selectedIndices.removeAll(
+                                        where: { $0 == index })
+                                } else {
+                                    properties.selectedIndices.append(index)
+                                }
+                            }
+                            .transition(.identity)
+                    }
+                }
+        }
+    }
+
+    @ViewBuilder
+    func ScrollDetectionRegion(_ isTpp: Bool = true) -> some View {
+        Rectangle()
+            .foregroundStyle(.clear)
+            .frame(height: 100)
+            .ignoresSafeArea()
+            .onGeometryChange(for: CGRect.self) { proxy in
+                proxy.frame(in: .global)
+            } action: { newValue in
+                if isTpp {
+                    scrollProperties.topRegion = newValue
+                } else {
+                    scrollProperties.bottomRegion = newValue
+                }
+            }
+    }
+    
+    private func resteTimer() {
+        scrollProperties.manualScrollOffset = 0
+        scrollProperties.timer?.invalidate()
+        scrollProperties.timer = nil
+        scrollProperties.direction = .none
+    }
+
+    private func onGestrueChange(_ gestrue: UIPanGestureRecognizer) {
+        let position = gestrue.location(in: gestrue.view)
+
+        if let fallingIndex = items.firstIndex(where: {
+            $0.location.contains(position)
+        }) {
+            if properties.start == nil {
+                properties.start = fallingIndex
+                properties.isDeleteDrag = properties.previousIndices.contains(
+                    fallingIndex)
+            }
+            properties.end = fallingIndex
+
+            if let start = properties.start, let end = properties.end {
+                if properties.isDeleteDrag {
+                    let indices = (start > end ? end...start : start...end)
+                        .compactMap({ $0 })
+                    properties.toBeDeletedIndices = Set(
+                        properties.previousIndices
+                    ).intersection(indices).compactMap({ $0 })
+                } else {
+                    let indices = (start > end ? end...start : start...end)
+                        .compactMap({ $0 })
+                    properties.selectedIndices = Set(properties.previousIndices)
+                        .union(indices).compactMap({ $0 })
+                }
+            }
+
+            scrollProperties.direction =
+                scrollProperties.topRegion.contains(position)
+                ? .down
+                : scrollProperties.bottomRegion.contains(position)
+                    ? .up : .none
+        }
+    }
+
+    private func onGestrueEnded(_ gesture: UIPanGestureRecognizer) {
+        for index in properties.toBeDeletedIndices {
+            properties.selectedIndices.removeAll(where: { $0 == index })
+        }
+        properties.toBeDeletedIndices = []
+        properties.previousIndices = properties.selectedIndices
+        properties.start = nil
+        properties.end = nil
+        properties.isDeleteDrag = false
+        
+        resteTimer()
+    }
+
+    private func createSampleData() {
+        guard items.isEmpty else { return }
+        let colors: [Color] = [
+            .red, .pink, .orange, .brown, .blue, .blue, .green, .gray, .purple,
+        ]
+
+        for _ in 0...4 {
+            let sampleItems = colors.shuffled().compactMap({ Item(color: $0) })
+            items.append(contentsOf: sampleItems)
+        }
+    }
+}
+
+struct PanGesture: UIGestureRecognizerRepresentable {
+    var handle: (UIPanGestureRecognizer) -> Void
+
+    func makeUIGestureRecognizer(context: Context)
+        -> UIPanGestureRecognizer
+    {
+        return UIPanGestureRecognizer()
+    }
+
+    func updateUIGestureRecognizer(
+        _ recognizer: UIPanGestureRecognizer, context: Context
+    ) {
+
+    }
+
+    func handleUIGestureRecognizerAction(
+        _ recognizer: UIPanGestureRecognizer, context: Context
+    ) {
+        handle(recognizer)
+    }
+}
+
+#Preview {
+    ContentView()
+}
+```
