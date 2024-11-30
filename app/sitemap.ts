@@ -1,17 +1,24 @@
-import { getBlogPosts } from 'app/libs/utils'
+import { getBlogPosts, getAllTags } from "app/libs/server-utils";
 
-export const baseUrl = 'https://portfolio-blog-starter.vercel.app'
+export const baseUrl = "https://kaiyang.xyz";
 
-export default async function sitemap() {
+export default function sitemap() {
   let blogs = getBlogPosts().map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.metadata.publishedAt,
-  }))
+    lastModified: new Date(post.metadata.publishedAt)
+      .toISOString()
+      .split("T")[0],
+  }));
 
-  let routes = ['', '/blog'].map((route) => ({
+  let routes = ["", "/blog", "/projects"].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString().split('T')[0],
-  }))
+    lastModified: new Date().toISOString().split("T")[0],
+  }));
 
-  return [...routes, ...blogs]
+  let tagRoutes = getAllTags().map((tag) => ({
+    url: `${baseUrl}/blog/tag/${tag}`,
+    lastModified: new Date().toISOString().split("T")[0],
+  }));
+
+  return [...routes, ...blogs, ...tagRoutes];
 }
