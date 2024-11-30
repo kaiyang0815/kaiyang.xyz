@@ -3,7 +3,10 @@ import { getPostsByTag } from "app/libs/server-utils";
 import { formatDate } from "app/libs/utils";
 import Link from "next/link";
 
-export default function Tag({ params }) {
+type Params = Promise<{ slug: string }>;
+
+export default async function Tag(props: { params: Params }) {
+  const params = await props.params;
   const posts = getPostsByTag(params.slug);
   return (
     <section>

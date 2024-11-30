@@ -1,23 +1,20 @@
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
 import { formatDate } from "app/libs/utils";
-import { getBlogPosts, getWeekly } from "app/libs/server-utils";
+import { getBlogPosts } from "app/libs/server-utils";
 import { baseUrl } from "app/sitemap";
 import Link from "next/link";
 
 export async function generateStaticParams() {
-  let posts = getWeekly();
+  let posts = getBlogPosts();
 
   return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-type Params = Promise<{ slug: string }>;
-
-export async function generateMetadata(props: { params: Params }) {
-  const params = await props.params;
-  let post = getWeekly().find((post) => post.slug === params.slug);
+export function generateMetadata({ params }) {
+  let post = getBlogPosts().find((post) => post.slug === params.slug);
   if (!post) {
     return;
   }
@@ -41,7 +38,7 @@ export async function generateMetadata(props: { params: Params }) {
       description,
       type: "article",
       publishedTime,
-      url: `${baseUrl}/weekl/${post.slug}`,
+      url: `${baseUrl}/weekly/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -57,9 +54,7 @@ export async function generateMetadata(props: { params: Params }) {
   };
 }
 
-export default async function Blog(props: { params: Params }) {
-  const params = await props.params;
-
+export default function Blog({ params }) {
   let post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) {

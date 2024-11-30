@@ -8,6 +8,7 @@ import {
 } from "app/libs/server-utils";
 import { ProjectList } from "./components/project-list";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function Page() {
   const posts = getBlogPosts();
@@ -30,9 +31,12 @@ export default function Page() {
       <section>
         <div className="mt-8 mb-4 flex flex-row items-end justify-between text-xl font-medium tracking-tighter">
           <h2>Featured posts</h2>
-          <Link href={"/blog"} className="text-neutral-500 hover:text-red-900">
-            <p className="text-sm">View all</p>
-          </Link>
+          {/* <Link href={"/blog"} className="text-neutral-500 hover:text-red-900">
+            <div className="flex flex-row items-center space-x-1">
+              <p className="text-sm">View all</p>
+              <ArrowRight size={16} />
+            </div>
+          </Link> */}
         </div>
         <div className="flex flex-col gap-2 md:flex-row md:gap-2">
           <BlogPosts posts={featuredPosts} />
@@ -58,9 +62,7 @@ export default function Page() {
               className="mb-2 flex flex-col space-y-1"
             >
               <div className="flex w-full flex-row items-center space-x-1">
-                <h3 className="font-medium hover:text-orange-900">
-                  {category}
-                </h3>
+                <h3 className="font-medium hover:text-red-900">{category}</h3>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
                   {"(" +
                     posts.filter((post) => post.metadata.category === category)
@@ -78,7 +80,7 @@ export default function Page() {
         <div className="flex flex-row items-center space-x-2">
           {tags.map((tag) => (
             <Link key={tag} href={`/blog/tag/${tag}`}>
-              <p className="text-base text-neutral-900 hover:text-red-900 dark:text-neutral-400 dark:hover:text-red-100">
+              <p className="text-base text-neutral-900 hover:text-red-900 dark:text-neutral-400">
                 <span className="mr-0.5 text-neutral-400 dark:text-neutral-400">
                   #
                 </span>

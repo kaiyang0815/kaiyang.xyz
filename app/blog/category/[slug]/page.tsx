@@ -3,7 +3,11 @@ import { getPostsByCategory } from "app/libs/server-utils";
 import { formatDate } from "app/libs/utils";
 import Link from "next/link";
 
-export default function Category({ params }) {
+type Params = Promise<{ slug: string }>;
+
+export default async function Category(props: { params: Params }) {
+  const params = await props.params;
+
   const posts = getPostsByCategory(params.slug);
   return (
     <section>

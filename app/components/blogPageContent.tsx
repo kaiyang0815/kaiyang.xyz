@@ -69,7 +69,7 @@ export default function BlogPageContent({
                   <p className="w-[100px] text-sm text-neutral-600 tabular-nums dark:text-neutral-400">
                     {formatDate(post.metadata.publishedAt, false)}
                   </p>
-                  <p className="text-base font-medium tracking-tight text-neutral-900 hover:text-orange-900 dark:text-neutral-100">
+                  <p className="text-base font-medium tracking-tight text-neutral-900 hover:text-red-900 dark:text-neutral-100">
                     {post.metadata.title}
                   </p>
                 </div>
@@ -99,7 +99,7 @@ export default function BlogPageContent({
         <div className="flex flex-row space-x-2">
           {tags.map((tag) => (
             <Link key={tag} href={`/blog/tag/${tag}`}>
-              <p className="text-base text-neutral-600 hover:text-red-900 dark:text-neutral-400 dark:hover:text-red-100">
+              <p className="text-base text-neutral-600 hover:text-red-900 dark:text-neutral-400">
                 {"#" + tag}
               </p>
             </Link>

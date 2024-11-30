@@ -16,10 +16,10 @@ export function Tab({ items, selectedItem, onChange }: TabProps) {
           key={item}
           onClick={() => onChange(item)}
           className={cn(
-            "pb-2 text-sm font-medium transition-all",
+            "border-b-2 pb-2 text-sm font-medium transition-all",
             selectedItem === item
-              ? "border-b-2 border-neutral-800 text-neutral-900 dark:border-neutral-100 dark:text-neutral-100"
-              : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100",
+              ? "border-b-2 border-red-800 text-neutral-900 dark:border-neutral-100 dark:text-neutral-100"
+              : "border-transparent text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100",
           )}
         >
           {item}
