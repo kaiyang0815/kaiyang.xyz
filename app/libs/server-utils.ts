@@ -9,6 +9,8 @@ type Metadata = {
   category: string;
   tags: string[];
   image?: string;
+  featured?: string;
+  isWeekly?: string;
 };
 
 function parseFrontmatter(fileContent: string) {
@@ -62,11 +64,17 @@ function getMDXData(dir: string) {
 }
 
 export const getBlogPosts = cache(() => {
-  return getMDXData(path.join(process.cwd(), "app", "blog", "posts"));
+  return getMDXData(path.join(process.cwd(), "app", "content", "posts"));
 });
 
 export const getProjects = cache(() => {
-  return getMDXData(path.join(process.cwd(), "app", "project", "projects"));
+  return getMDXData(path.join(process.cwd(), "app", "content", "projects"));
+});
+
+export const getWeekly = cache(() => {
+  return getMDXData(path.join(process.cwd(), "app", "content", "posts")).filter(
+    (post) => post.metadata.isWeekly === "true",
+  );
 });
 
 export const getAllCategories = cache(() => {
@@ -91,4 +99,9 @@ export const getPostsByTag = cache((tag: string) => {
 export const getPostsByCategory = cache((category: string) => {
   const allBlogs = getBlogPosts();
   return allBlogs.filter((post) => post.metadata.category === category);
+});
+
+export const getFeaturedPosts = cache(() => {
+  const allBlogs = getBlogPosts();
+  return allBlogs.filter((post) => post.metadata.featured === "true");
 });

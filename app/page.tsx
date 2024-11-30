@@ -3,13 +3,16 @@ import {
   getAllCategories,
   getAllTags,
   getBlogPosts,
+  getFeaturedPosts,
   getProjects,
 } from "app/libs/server-utils";
 import { ProjectList } from "./components/project-list";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function Page() {
   const posts = getBlogPosts();
+  const featuredPosts = getFeaturedPosts();
   const projects = getProjects();
   const categories = getAllCategories();
   const tags = getAllTags();
@@ -26,11 +29,17 @@ export default function Page() {
       </section>
       <hr className="my-4 border-neutral-200 dark:border-neutral-800" />
       <section>
-        <h2 className="mt-8 mb-4 text-xl font-medium tracking-tighter">
-          Featured posts
-        </h2>
+        <div className="mt-8 mb-4 flex flex-row items-end justify-between text-xl font-medium tracking-tighter">
+          <h2>Featured posts</h2>
+          {/* <Link href={"/blog"} className="text-neutral-500 hover:text-red-900">
+            <div className="flex flex-row items-center space-x-1">
+              <p className="text-sm">View all</p>
+              <ArrowRight size={16} />
+            </div>
+          </Link> */}
+        </div>
         <div className="flex flex-col gap-2 md:flex-row md:gap-2">
-          <BlogPosts posts={posts} />
+          <BlogPosts posts={featuredPosts} />
         </div>
       </section>
 
@@ -46,16 +55,14 @@ export default function Page() {
           Categories
         </h2>
         <div className="flex flex-col gap-2 md:flex-row md:gap-2">
-          {categories.slice(0, -1).map((category) => (
+          {categories.map((category) => (
             <Link
               key={category}
               href={`/blog/category/${category}`}
               className="mb-2 flex flex-col space-y-1"
             >
               <div className="flex w-full flex-row items-center space-x-1">
-                <h3 className="font-medium hover:text-orange-900">
-                  {category}
-                </h3>
+                <h3 className="font-medium hover:text-red-900">{category}</h3>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
                   {"(" +
                     posts.filter((post) => post.metadata.category === category)
@@ -71,9 +78,9 @@ export default function Page() {
       <section>
         <h2 className="mt-8 mb-4 text-xl font-medium tracking-tighter">Tags</h2>
         <div className="flex flex-row items-center space-x-2">
-          {tags.slice(0, -1).map((tag) => (
+          {tags.map((tag) => (
             <Link key={tag} href={`/blog/tag/${tag}`}>
-              <p className="text-base text-neutral-900 hover:text-red-900 dark:text-neutral-400 dark:hover:text-red-100">
+              <p className="text-base text-neutral-900 hover:text-red-900 dark:text-neutral-400">
                 <span className="mr-0.5 text-neutral-400 dark:text-neutral-400">
                   #
                 </span>
