@@ -1,20 +1,22 @@
-import { notFound } from 'next/navigation'
-import { CustomMDX } from 'app/components/mdx'
-import { formatDate, getBlogPosts, getProjects } from 'app/libs/utils'
-import { baseUrl } from 'app/sitemap'
+import { notFound } from "next/navigation";
+import { CustomMDX } from "app/components/mdx";
+import { formatDate } from "app/libs/utils";
+import { getProjects } from "app/libs/server-utils";
+import { baseUrl } from "app/sitemap";
+import Link from "next/link";
 
 export async function generateStaticParams() {
-  let projects = getProjects()
+  let projects = getProjects();
 
   return projects.map((project) => ({
     slug: project.slug,
-  }))
+  }));
 }
 
 export function generateMetadata({ params }) {
-  let project = getProjects().find((project) => project.slug === params.slug)
+  let project = getProjects().find((project) => project.slug === params.slug);
   if (!project) {
-    return
+    return;
   }
 
   let {
@@ -22,10 +24,11 @@ export function generateMetadata({ params }) {
     publishedAt: publishedTime,
     summary: description,
     image,
-  } = project.metadata
+  } = project.metadata;
+
   let ogImage = image
     ? image
-    : `${baseUrl}/og?title=${encodeURIComponent(title)}`
+    : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
 
   return {
     title,
@@ -33,7 +36,7 @@ export function generateMetadata({ params }) {
     openGraph: {
       title,
       description,
-      type: 'article',
+      type: "article",
       publishedTime,
       url: `${baseUrl}/project/${project.slug}`,
       images: [
@@ -43,19 +46,19 @@ export function generateMetadata({ params }) {
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
       images: [ogImage],
     },
-  }
+  };
 }
 
 export default function Project({ params }) {
-  let project = getProjects().find((project) => project.slug === params.slug)
+  let project = getProjects().find((project) => project.slug === params.slug);
 
   if (!project) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -65,34 +68,37 @@ export default function Project({ params }) {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
+            "@context": "https://schema.org",
+            "@type": "Article",
             headline: project.metadata.title,
             datePublished: project.metadata.publishedAt,
             dateModified: project.metadata.publishedAt,
-            description: project.metadata.summary,
             image: project.metadata.image
-              ? `${baseUrl}${project.metadata.image}`
+              ? project.metadata.image
               : `/og?title=${encodeURIComponent(project.metadata.title)}`,
             url: `${baseUrl}/project/${project.slug}`,
             author: {
-              '@type': 'Person',
-              name: 'My Portfolio',
+              "@type": "Person",
+              name: "My Portfolio",
             },
           }),
         }}
       />
-      <h1 className="title font-semibold text-2xl tracking-tighter">
+      <h1 className="title text-2xl font-semibold tracking-tighter">
         {project.metadata.title}
       </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm">
+      <div className="mt-2 mb-8 flex items-center justify-start space-x-2 text-sm">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
           {formatDate(project.metadata.publishedAt)}
         </p>
+        <span className="text-neutral-400 dark:text-neutral-500">|</span>
+        <Link href={`/project/category/${project.metadata.category}`}>
+          {project.metadata.category}
+        </Link>
       </div>
       <article className="prose">
         <CustomMDX source={project.content} />
       </article>
     </section>
-  )
+  );
 }
