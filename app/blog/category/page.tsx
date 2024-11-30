@@ -7,9 +7,16 @@ import {
 
 export const metadata = {
   title: "Blog",
+  description: "Read my blog.",
 };
 
-export default function BlogPage() {
+enum TabItem {
+  All = "All",
+  Category = "Category",
+  Tag = "Tag",
+}
+
+export default function Page() {
   const posts = getBlogPosts();
   const categories = getAllCategories();
   const tags = getAllTags();
@@ -17,7 +24,12 @@ export default function BlogPage() {
   return (
     <section>
       <h1 className="mb-8 text-2xl font-medium tracking-tighter">Posts</h1>
-      <BlogPageContent posts={posts} categories={categories} tags={tags} />
+      <BlogPageContent
+        posts={posts}
+        categories={categories}
+        tags={tags}
+        tag={TabItem.Category}
+      />
     </section>
   );
 }

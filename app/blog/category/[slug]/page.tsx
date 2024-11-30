@@ -1,32 +1,19 @@
-import Link from "next/link";
+import BlogPageContent from "app/components/blogPageContent";
+import { getPostsByCategory } from "app/libs/server-utils";
 import { formatDate } from "app/libs/utils";
+import Link from "next/link";
 
-interface BlogPostsProps {
-  posts: Array<{
-    slug: string;
-    metadata: {
-      title: string;
-      publishedAt: string;
-      summary: string;
-      category: string;
-      image?: string;
-    };
-    content: string;
-  }>;
-}
-
-export function BlogPosts({ posts }: BlogPostsProps) {
+export default function Category({ params }) {
+  const posts = getPostsByCategory(params.slug);
   return (
-    <div>
+    <section>
+      <h1 className="mb-8 text-2xl font-medium tracking-tighter">
+        {params.slug}
+      </h1>
       {posts
-        .sort((a, b) => {
-          if (
-            new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
-          ) {
-            return -1;
-          }
-          return 1;
-        })
+        .sort((a, b) =>
+          a.metadata.publishedAt > b.metadata.publishedAt ? -1 : 1,
+        )
         .map((post) => (
           <Link
             key={post.slug}
@@ -43,6 +30,6 @@ export function BlogPosts({ posts }: BlogPostsProps) {
             </div>
           </Link>
         ))}
-    </div>
+    </section>
   );
 }

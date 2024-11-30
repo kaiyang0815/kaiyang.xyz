@@ -1,14 +1,16 @@
 ---
-title: 'SwiftUI Drag to Select Multiple Items in Grid View'
-publishedAt: '2024-10-05'
-summary: 'Explore the enduring debate between using spaces and tabs for code indentation, and why this choice matters more than you might think.'
+title: "SwiftUI Drag to Select Multiple Items in Grid View"
+publishedAt: "2024-10-05"
+summary: "Explore the enduring debate between using spaces and tabs for code indentation, and why this choice matters more than you might think."
+category: "SwiftUI"
+tags: grid, binding
 ---
 
-该视频利用UIGesture完成了类似于iOS相册应用的图片拖动多选功能。
+This video demonstrates the implementation of a multi-select feature through dragging, similar to the iOS Photos app's functionality, using UIGesture.
 
 ## safeAreaPadding modifier
 
-## Binding 类型
+## Binding Type
 
 ```swift
 @ViewBuilder
@@ -21,9 +23,9 @@ func ItemCardView(_ binding: Binding<Item>) -> some View{
 }
 ```
 
-## 多次选择内容的合并
+## Merging Multiple Selections
 
-使用并集操作符号利用集合类型的元素独一性完成：
+Using the union operator to leverage the uniqueness of set elements:
 
 ```swift
 if let start = properties.start, let end = properties.end {
@@ -32,9 +34,9 @@ if let start = properties.start, let end = properties.end {
 }
 ```
 
-## 重复选中时，取消选择的效果
+## Deselection Effect When Selecting Again
 
-## 全部代码
+## Complete Code
 
 ```swift
 //
@@ -50,13 +52,13 @@ struct SelectionProperties {
     var start: Int?
     var end: Int?
     var selectedIndices: [Int] = []
-    // 用于处理多次选择
+    // Used to handle multiple selections
     var previousIndices: [Int] = []
     var toBeDeletedIndices: [Int] = []
     var isDeleteDrag: Bool = false
 }
 
-// 处理拖动到底部时自动滚动视图
+// Handles scrolling to the bottom of the view
 struct ScrollProperties {
     var position: ScrollPosition = .init()
     var currentScrollOffset: CGFloat = 0
@@ -149,7 +151,7 @@ struct Home: View {
                         })
                     scrollProperties.timer?.fire()
                 } else {
-                    resteTimer()
+                    resetTimer()
                 }
             }
         )
@@ -163,9 +165,9 @@ struct Home: View {
                 let state = gesture.state
 
                 if state == .began || state == .changed {
-                    onGestrueChange(gesture)
+                    onGestureChange(gesture)
                 } else {
-                    onGestrueEnded(gesture)
+                    onGestureEnded(gesture)
                 }
             }
         )
@@ -214,7 +216,7 @@ struct Home: View {
     }
 
     @ViewBuilder
-    func ScrollDetectionRegion(_ isTpp: Bool = true) -> some View {
+    func ScrollDetectionRegion(_ isTop: Bool = true) -> some View {
         Rectangle()
             .foregroundStyle(.clear)
             .frame(height: 100)
@@ -222,23 +224,23 @@ struct Home: View {
             .onGeometryChange(for: CGRect.self) { proxy in
                 proxy.frame(in: .global)
             } action: { newValue in
-                if isTpp {
+                if isTop {
                     scrollProperties.topRegion = newValue
                 } else {
                     scrollProperties.bottomRegion = newValue
                 }
             }
     }
-    
-    private func resteTimer() {
+
+    private func resetTimer() {
         scrollProperties.manualScrollOffset = 0
         scrollProperties.timer?.invalidate()
         scrollProperties.timer = nil
         scrollProperties.direction = .none
     }
 
-    private func onGestrueChange(_ gestrue: UIPanGestureRecognizer) {
-        let position = gestrue.location(in: gestrue.view)
+    private func onGestureChange(_ gesture: UIPanGestureRecognizer) {
+        let position = gesture.location(in: gesture.view)
 
         if let fallingIndex = items.firstIndex(where: {
             $0.location.contains(position)
@@ -273,7 +275,7 @@ struct Home: View {
         }
     }
 
-    private func onGestrueEnded(_ gesture: UIPanGestureRecognizer) {
+    private func onGestureEnded(_ gesture: UIPanGestureRecognizer) {
         for index in properties.toBeDeletedIndices {
             properties.selectedIndices.removeAll(where: { $0 == index })
         }
@@ -282,8 +284,8 @@ struct Home: View {
         properties.start = nil
         properties.end = nil
         properties.isDeleteDrag = false
-        
-        resteTimer()
+
+        resetTimer()
     }
 
     private func createSampleData() {
