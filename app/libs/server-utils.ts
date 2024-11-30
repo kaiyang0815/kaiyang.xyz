@@ -9,6 +9,7 @@ type Metadata = {
   category: string;
   tags: string[];
   image?: string;
+  featured?: string;
 };
 
 function parseFrontmatter(fileContent: string) {
@@ -91,4 +92,9 @@ export const getPostsByTag = cache((tag: string) => {
 export const getPostsByCategory = cache((category: string) => {
   const allBlogs = getBlogPosts();
   return allBlogs.filter((post) => post.metadata.category === category);
+});
+
+export const getFeaturedPosts = cache(() => {
+  const allBlogs = getBlogPosts();
+  return allBlogs.filter((post) => post.metadata.featured === "true");
 });
