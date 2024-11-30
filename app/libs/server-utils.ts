@@ -27,11 +27,11 @@ function parseFrontmatter(fileContent: string) {
     value = value.replace(/^['"](.*)['"]$/, "$1");
 
     if (key.trim() === "tags") {
-      metadata[key.trim() as keyof Metadata] = value
+      metadata[key.trim() as "tags"] = value
         .split(",")
         .map((tag) => tag.trim());
     } else {
-      metadata[key.trim() as keyof Metadata] = value;
+      metadata[key.trim() as Exclude<keyof Metadata, "tags">] = value;
     }
   });
 
