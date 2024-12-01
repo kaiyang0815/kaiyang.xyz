@@ -4,6 +4,7 @@ import { formatDate } from "app/libs/utils";
 import { getBlogPosts, getWeekly } from "app/libs/server-utils";
 import { baseUrl } from "app/sitemap";
 import Link from "next/link";
+import Comments from "@/app/components/Comments";
 
 export async function generateStaticParams() {
   let posts = getWeekly();
@@ -94,16 +95,35 @@ export default async function Blog(props: { params: Params }) {
       </h1>
       <div className="mt-2 mb-8 flex items-center justify-start space-x-2 text-sm">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
+          Writen by kaiyang at {formatDate(post.metadata.publishedAt)}
         </p>
         <span className="text-neutral-400 dark:text-neutral-500">|</span>
-        <Link href={`/blog/category/${post.metadata.category}`}>
+        <Link
+          href={`/blog/category/${post.metadata.category}`}
+          className="text-neutral-600 hover:text-red-900"
+        >
           {post.metadata.category}
         </Link>
+        <span className="text-neutral-400 dark:text-neutral-500">|</span>
+        {post.metadata.tags.map((tag) => (
+          <Link
+            key={tag}
+            href={`/blog/tag/${tag}`}
+            className="text-neutral-600 hover:text-red-900"
+          >
+            #{tag}
+          </Link>
+        ))}
       </div>
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
+      <div className="mt-8">
+        <h2 className="mb-4 text-2xl font-medium tracking-tighter">Comments</h2>
+        <div className="giscus-container">
+          <Comments />
+        </div>
+      </div>
     </section>
   );
 }

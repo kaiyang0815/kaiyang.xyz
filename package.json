@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@giscus/react": "^3.0.0",
     "@tailwindcss/postcss": "next",
     "@types/node": "22.10.1",
     "@types/react": "18.3.12",

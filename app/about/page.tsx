@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Comments from "../components/Comments";
 
 export const metadata = {
   title: "About",
@@ -63,6 +64,10 @@ export default function AboutPage() {
             </li>
           ))}
         </ul>
+      </div>
+
+      <div className="giscus-container">
+        <Comments />
       </div>
     </section>
   );
