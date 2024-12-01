@@ -1,9 +1,9 @@
+import { getBlogPosts } from "@/lib/server-utils";
 import RSS from "rss";
-import { getBlogPosts } from "app/libs/server-utils";
-import { baseUrl } from "app/sitemap";
+import { baseUrl } from "../sitemap";
 
 export async function GET() {
-  let allBlogs = getBlogPosts();
+  const allBlogs = getBlogPosts();
 
   const feed = new RSS({
     title: "Kaiyang's Blog",

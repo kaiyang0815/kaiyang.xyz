@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { formatDate } from "app/libs/utils";
-import { Tab } from "./tab";
+import { TabBar } from "@/components/tabbar";
+import { formatDate } from "@/lib/utils";
 
 enum TabItem {
   All = "All",
@@ -41,7 +41,7 @@ export default function BlogPageContent({
 
   return (
     <section>
-      <Tab
+      <TabBar
         items={Object.values(TabItem)}
         selectedItem={selectedTab}
         onChange={(item) => setSelectedTab(item as TabItem)}

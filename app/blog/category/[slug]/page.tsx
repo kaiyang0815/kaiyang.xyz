@@ -1,6 +1,5 @@
-import BlogPageContent from "app/components/blogPageContent";
-import { getPostsByCategory } from "app/libs/server-utils";
-import { formatDate } from "app/libs/utils";
+import { getPostsByCategory } from "@/lib/server-utils";
+import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 type Params = Promise<{ slug: string }>;

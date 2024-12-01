@@ -1,12 +1,12 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { formatDate } from "app/libs/utils";
-import { getProjects } from "app/libs/server-utils";
-import { baseUrl } from "app/sitemap";
+import notFound from "@/app/not-found";
+import { baseUrl } from "@/app/sitemap";
+import { CustomMDX } from "@/components/mdx";
+import { getProjects } from "@/lib/server-utils";
+import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 export async function generateStaticParams() {
-  let projects = getProjects();
+  const projects = getProjects();
 
   return projects.map((project) => ({
     slug: project.slug,
@@ -14,19 +14,19 @@ export async function generateStaticParams() {
 }
 
 export function generateMetadata({ params }) {
-  let project = getProjects().find((project) => project.slug === params.slug);
+  const project = getProjects().find((project) => project.slug === params.slug);
   if (!project) {
     return;
   }
 
-  let {
+  const {
     title,
     publishedAt: publishedTime,
     summary: description,
     image,
   } = project.metadata;
 
-  let ogImage = image
+  const ogImage = image
     ? image
     : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
 
@@ -55,7 +55,7 @@ export function generateMetadata({ params }) {
 }
 
 export default function Project({ params }) {
-  let project = getProjects().find((project) => project.slug === params.slug);
+  const project = getProjects().find((project) => project.slug === params.slug)!;
 
   if (!project) {
     notFound();

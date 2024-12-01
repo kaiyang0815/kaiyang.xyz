@@ -1,30 +1,19 @@
 /**
- * Utility functions for client-side operations
- */
-
-/**
- * Utility function for combining class names
- */
-export function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
-/**
  * Formats a date string with optional relative time
  * @param date - Date string to format
  * @param includeRelative - Whether to include relative time (e.g., "2y ago")
  * @returns Formatted date string
  */
 export function formatDate(date: string, includeRelative = false) {
-  let currentDate = new Date();
+  const currentDate = new Date();
   if (!date.includes("T")) {
     date = `${date}T00:00:00`;
   }
-  let targetDate = new Date(date);
+  const targetDate = new Date(date);
 
-  let yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-  let monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-  let daysAgo = currentDate.getDate() - targetDate.getDate();
+  const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
+  const monthsAgo = currentDate.getMonth() - targetDate.getMonth();
+  const daysAgo = currentDate.getDate() - targetDate.getDate();
 
   let formattedDate = "";
 
@@ -38,7 +27,7 @@ export function formatDate(date: string, includeRelative = false) {
     formattedDate = "Today";
   }
 
-  let fullDate = targetDate.toLocaleString("en-us", {
+  const fullDate = targetDate.toLocaleString("en-us", {
     month: "short",
     day: "numeric",
     year: "numeric",

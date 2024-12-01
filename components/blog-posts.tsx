@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatDate } from "app/libs/utils";
+import { formatDate } from "@/lib/utils";
 
 interface BlogPostsProps {
   posts: Array<{

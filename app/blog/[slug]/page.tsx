@@ -1,12 +1,13 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { formatDate } from "app/libs/utils";
-import { getBlogPosts, getWeekly } from "app/libs/server-utils";
-import { baseUrl } from "app/sitemap";
 import Link from "next/link";
+import Comments from "@/components/comments";
+import { formatDate } from "@/lib/utils";
+import { baseUrl } from "@/app/sitemap";
+import notFound from "@/app/not-found";
+import { CustomMDX } from "@/components/mdx";
+import { getBlogPosts, getWeekly } from "@/lib/server-utils";
 
 export async function generateStaticParams() {
-  let posts = getWeekly();
+  const posts = getWeekly();
 
   return posts.map((post) => ({
     slug: post.slug,
@@ -17,19 +18,19 @@ type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata(props: { params: Params }) {
   const params = await props.params;
-  let post = getWeekly().find((post) => post.slug === params.slug);
+  const post = getWeekly().find((post) => post.slug === params.slug);
   if (!post) {
     return;
   }
 
-  let {
+  const {
     title,
     publishedAt: publishedTime,
     summary: description,
     image,
   } = post.metadata;
 
-  let ogImage = image
+  const ogImage = image
     ? image
     : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
 
@@ -60,7 +61,7 @@ export async function generateMetadata(props: { params: Params }) {
 export default async function Blog(props: { params: Params }) {
   const params = await props.params;
 
-  let post = getBlogPosts().find((post) => post.slug === params.slug);
+  const post = getBlogPosts().find((post) => post.slug === params.slug)!;
 
   if (!post) {
     notFound();
@@ -94,16 +95,35 @@ export default async function Blog(props: { params: Params }) {
       </h1>
       <div className="mt-2 mb-8 flex items-center justify-start space-x-2 text-sm">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
+          Writen by kaiyang at {formatDate(post.metadata.publishedAt)}
         </p>
         <span className="text-neutral-400 dark:text-neutral-500">|</span>
-        <Link href={`/blog/category/${post.metadata.category}`}>
+        <Link
+          href={`/blog/category/${post.metadata.category}`}
+          className="text-neutral-600 hover:text-red-900"
+        >
           {post.metadata.category}
         </Link>
+        <span className="text-neutral-400 dark:text-neutral-500">|</span>
+        {post.metadata.tags.map((tag) => (
+          <Link
+            key={tag}
+            href={`/blog/tag/${tag}`}
+            className="text-neutral-600 hover:text-red-900"
+          >
+            #{tag}
+          </Link>
+        ))}
       </div>
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
+      <div className="mt-8">
+        <h2 className="mb-4 text-2xl font-medium tracking-tighter">Comments</h2>
+        <div className="giscus-container">
+          <Comments />
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,5 +1,5 @@
+import { formatDate } from "@/lib/utils";
 import Link from "next/link";
-import { formatDate } from "app/libs/utils";
 
 interface Project {
   slug: string;

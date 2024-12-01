@@ -1,9 +1,5 @@
-import BlogPageContent from "app/components/blogPageContent";
-import {
-  getBlogPosts,
-  getAllCategories,
-  getAllTags,
-} from "app/libs/server-utils";
+import BlogPageContent from "@/components/blog-page-content";
+import { getAllCategories, getAllTags, getBlogPosts } from "@/lib/server-utils";
 
 export const metadata = {
   title: "Blog",
