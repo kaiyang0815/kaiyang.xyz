@@ -1,12 +1,12 @@
-import { getWeekly } from "app/libs/server-utils";
-import { formatDate } from "app/libs/utils";
+import { getWeekly } from "@/lib/server-utils";
+import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 export const metadata = {
   title: "Weekly",
 };
 
-export default function BlogPage() {
+export default function WeeklyPage() {
   const posts = getWeekly();
 
   return (

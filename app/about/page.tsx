@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Comments from "../components/Comments";
+import Comments from "@/components/comments";
 
 export const metadata = {
   title: "About",

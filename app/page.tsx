@@ -1,16 +1,9 @@
-import { BlogPosts } from "app/components/posts";
-import {
-  getAllCategories,
-  getAllTags,
-  getBlogPosts,
-  getFeaturedPosts,
-  getProjects,
-} from "app/libs/server-utils";
-import { ProjectList } from "./components/project-list";
+import { BlogPosts } from "@/components/blog-posts";
+import { ProjectList } from "@/components/project-list";
+import { getAllCategories, getAllTags, getBlogPosts, getFeaturedPosts, getProjects } from "@/lib/server-utils";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
-export default function Page() {
+export default function Home() {
   const posts = getBlogPosts();
   const featuredPosts = getFeaturedPosts();
   const projects = getProjects();
@@ -21,7 +14,7 @@ export default function Page() {
     <div>
       <section>
         <h1 className="mb-8 text-2xl font-medium tracking-tighter">
-          hey, I'm kaiyang 👋
+          hey, I&apos;m kaiyang 👋
         </h1>
         <p className="prose prose-neutral dark:prose-invert">
           {`I'm a software engineer and designer. I enjoy creating beautiful and reliable applications.`}

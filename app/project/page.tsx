@@ -1,5 +1,5 @@
-import { ProjectList } from "app/components/project-list";
-import { getProjects } from "app/libs/server-utils";
+import { ProjectList } from "@/components/project-list";
+import { getProjects } from "@/lib/server-utils";
 
 export const metadata = {
   title: "Projects",

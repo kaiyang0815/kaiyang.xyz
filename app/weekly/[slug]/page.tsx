@@ -1,12 +1,12 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { formatDate } from "app/libs/utils";
-import { getBlogPosts } from "app/libs/server-utils";
-import { baseUrl } from "app/sitemap";
+import notFound from "@/app/not-found";
+import { baseUrl } from "@/app/sitemap";
+import { CustomMDX } from "@/components/mdx";
+import { getBlogPosts } from "@/lib/server-utils";
+import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 export async function generateStaticParams() {
-  let posts = getBlogPosts();
+  const posts = getBlogPosts();
 
   return posts.map((post) => ({
     slug: post.slug,
@@ -55,7 +55,7 @@ export function generateMetadata({ params }) {
 }
 
 export default function Blog({ params }) {
-  let post = getBlogPosts().find((post) => post.slug === params.slug);
+  const post = getBlogPosts().find((post) => post.slug === params.slug)!;
 
   if (!post) {
     notFound();

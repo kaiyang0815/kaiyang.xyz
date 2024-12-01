@@ -1,13 +1,13 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { formatDate } from "app/libs/utils";
-import { getBlogPosts, getWeekly } from "app/libs/server-utils";
-import { baseUrl } from "app/sitemap";
 import Link from "next/link";
-import Comments from "@/app/components/Comments";
+import Comments from "@/components/comments";
+import { formatDate } from "@/lib/utils";
+import { baseUrl } from "@/app/sitemap";
+import notFound from "@/app/not-found";
+import { CustomMDX } from "@/components/mdx";
+import { getBlogPosts, getWeekly } from "@/lib/server-utils";
 
 export async function generateStaticParams() {
-  let posts = getWeekly();
+  const posts = getWeekly();
 
   return posts.map((post) => ({
     slug: post.slug,
@@ -61,7 +61,7 @@ export async function generateMetadata(props: { params: Params }) {
 export default async function Blog(props: { params: Params }) {
   const params = await props.params;
 
-  let post = getBlogPosts().find((post) => post.slug === params.slug);
+  const post = getBlogPosts().find((post) => post.slug === params.slug)!;
 
   if (!post) {
     notFound();
