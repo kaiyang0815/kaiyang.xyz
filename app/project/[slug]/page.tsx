@@ -14,19 +14,19 @@ export async function generateStaticParams() {
 }
 
 export function generateMetadata({ params }) {
-  let project = getProjects().find((project) => project.slug === params.slug);
+  const project = getProjects().find((project) => project.slug === params.slug);
   if (!project) {
     return;
   }
 
-  let {
+  const {
     title,
     publishedAt: publishedTime,
     summary: description,
     image,
   } = project.metadata;
 
-  let ogImage = image
+  const ogImage = image
     ? image
     : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
 
@@ -55,7 +55,7 @@ export function generateMetadata({ params }) {
 }
 
 export default function Project({ params }) {
-  let project = getProjects().find((project) => project.slug === params.slug)!;
+  const project = getProjects().find((project) => project.slug === params.slug)!;
 
   if (!project) {
     notFound();

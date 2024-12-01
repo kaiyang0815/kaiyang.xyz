@@ -23,9 +23,9 @@ export default function AboutPage() {
 
       <div className="prose prose-neutral dark:prose-invert">
         <p>
-          Hi, I'm Kaiyang. I'm an iOS developer with a passion for crafting
+          Hi, I&apos;m Kaiyang. I&apos;m an iOS developer with a passion for crafting
           elegant and user-friendly mobile experiences. I specialize in building
-          native iOS applications and enjoy staying at the forefront of Apple's
+          native iOS applications and enjoy staying at the forefront of Apple&apos;s
           latest technologies.
         </p>
 
@@ -43,7 +43,7 @@ export default function AboutPage() {
 
         <h2>Interests</h2>
         <p>
-          Beyond iOS development, I'm passionate about mobile user experience,
+          Beyond iOS development, I&apos;m passionate about mobile user experience,
           app performance optimization, and exploring emerging Apple
           technologies. I enjoy keeping up with the latest WWDC announcements
           and contributing to the iOS developer community.

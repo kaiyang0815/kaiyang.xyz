@@ -18,19 +18,19 @@ type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata(props: { params: Params }) {
   const params = await props.params;
-  let post = getWeekly().find((post) => post.slug === params.slug);
+  const post = getWeekly().find((post) => post.slug === params.slug);
   if (!post) {
     return;
   }
 
-  let {
+  const {
     title,
     publishedAt: publishedTime,
     summary: description,
     image,
   } = post.metadata;
 
-  let ogImage = image
+  const ogImage = image
     ? image
     : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
 
