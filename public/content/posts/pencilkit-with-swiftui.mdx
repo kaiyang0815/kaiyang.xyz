@@ -1,0 +1,54 @@
+---
+title: "PencilKit with SwiftUI"
+publishedAt: "2024-12-04"
+summary: "Use PencilKit with SwiftUI"
+category: "Tutorial"
+tags: pencilkit, swiftui
+---
+
+## Use UIViewRepresentable create a canvas view
+
+### Create a canvas view
+
+The pencilkit not yet support SwiftUI, so we need to use UIViewRepresentable to create a canvas view.
+
+```swift
+import PencilKit
+import SwiftUI
+
+struct CanvasView: UIViewRepresentable {
+    func makeUIView(context: Context) -> PKCanvasView {
+        let canvasView = PKCanvasView()
+        canvasView.tool = PKInkingTool(.pen, color: .black)
+        return canvasView
+    }
+
+    func updateUIView(_ uiView: PKCanvasView, context: Context) {}
+}
+```
+
+The above code have a PKInkingTool, which is a default tool in PencilKit. We can change it to other tools and colors.
+
+### Create a SwiftUI view
+
+Now, we can create a SwiftUI view to display the canvas view.
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        CanvasView()
+            .ignoresSafeArea()
+    }
+}
+```
+
+### Example Image
+
+![pencilkit-with-swiftui-example-1](/content/posts/pencilkit-with-swiftui.png)
+
+## Reference
+
+- [Create a drawing app with PencilKit & more!](https://medium.com/@danielcrompton5/create-a-drawing-app-with-pencilkit-more-5c5a2a8a4738)
+- [PencilKit in SwiftUI](https://nicoladefilippo.com/pencilkit-in-swiftui/)
