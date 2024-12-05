@@ -1,0 +1,24 @@
+---
+title: "Add a text in picker"
+publishedAt: "2024-12-03"
+summary: "How to add a text in picker"
+category: "Tutorial"
+tags: picker, swiftui
+---
+
+## How to add a text in picker
+
+```swift
+    Picker("Source", selection: $selectedSource) {
+        Text("All")
+            .tag(nil as SourceConfig?)
+        ForEach(sources, id: \.id) { source in
+            Text(source.generalRule.siteName)
+                .tag(source)
+        }
+    }
+```
+
+## Reference
+
+[Adding and editing persistent data in your app](https://developer.apple.com/documentation/swiftdata/adding-and-editing-persistent-data-in-your-app)
