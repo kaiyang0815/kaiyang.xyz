@@ -1,0 +1,123 @@
+---
+title: "Docker 容器入门：从零开始学习容器化"
+description: "介绍 Docker 容器的基本概念和使用方法，帮助开发者快速掌握容器化技术。"
+draft: false
+publishDate: "2024-11-08"
+---
+
+## Docker 基础概念
+
+Docker 是一个开源的容器化平台，它让应用程序的部署变得更加简单和一致。
+
+### 核心概念
+
+1. 镜像（Image）
+2. 容器（Container）
+3. 仓库（Repository）
+4. Dockerfile
+
+## 常用命令
+
+### 1. 容器管理
+
+```bash
+# 运行容器
+docker run -d -p 3000:3000 --name my-app my-image
+
+# 查看运行中的容器
+docker ps
+
+# 停止容器
+docker stop my-app
+
+# 删除容器
+docker rm my-app
+```
+
+### 2. 镜像管理
+
+```bash
+# 构建镜像
+docker build -t my-image .
+
+# 查看镜像列表
+docker images
+
+# 删除镜像
+docker rmi my-image
+```
+
+## Dockerfile 示例
+
+```dockerfile
+# 使用 Node.js 官方镜像作为基础镜像
+FROM node:18-alpine
+
+# 设置工作目录
+WORKDIR /app
+
+# 复制 package.json 和 package-lock.json
+COPY package*.json ./
+
+# 安装依赖
+RUN npm install
+
+# 复制源代码
+COPY . .
+
+# 暴露端口
+EXPOSE 3000
+
+# 启动应用
+CMD ["npm", "start"]
+```
+
+## Docker Compose
+
+### 多容器应用示例
+
+```yaml
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_PASSWORD: example
+```
+
+## 最佳实践
+
+### 1. 镜像优化
+
+```dockerfile
+# 使用多阶段构建
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN npm install && npm run build
+
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+CMD ["node", "dist/main.js"]
+```
+
+### 2. 安全建议
+
+1. 使用官方镜像
+2. 定期更新基础镜像
+3. 使用非 root 用户运行应用
+4. 扫描镜像漏洞
+
+## 常见问题解决
+
+1. 容器无法访问：检查端口映射
+2. 镜像构建失败：检查 Dockerfile 语法
+3. 容器启动失败：查看日志排查问题
+4. 数据持久化：使用 Docker 数据卷

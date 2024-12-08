@@ -1,0 +1,24 @@
+---
+title: "使用 SwiftUI 开发 macOS 菜单栏应用"
+description: "本文介绍了如何使用 SwiftUI 开发一款 macOS 菜单栏应用。"
+draft: false
+publishDate: 2024-12-12
+---
+
+## MenuExtra
+
+使用 MenuExtra 可以创建一个菜单栏应用。
+
+```swift
+@main
+struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+        .menuExtra("MyApp", image: "AppIcon") {
+            MenuExtra()
+        }
+    }
+}
+```
