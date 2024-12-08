@@ -1,0 +1,62 @@
+---
+title: "Next.js 服务器组件：构建更快的 Web 应用"
+description: "深入了解 Next.js 的服务器组件特性，以及如何利用它们提升应用性能。"
+draft: false
+publishDate: "2024-12-01"
+---
+
+## 什么是服务器组件？
+
+服务器组件是 Next.js 的一个重要特性，它允许我们在服务器端渲染 React 组件，从而减少客户端的 JavaScript 包大小。
+
+## 服务器组件的优势
+
+1. 更小的客户端包大小
+2. 更快的页面加载速度
+3. 改善首次内容绘制（FCP）
+4. 更好的 SEO 表现
+
+## 使用示例
+
+### 基础用法
+
+```typescript
+// app/page.tsx
+async function getData() {
+  const res = await fetch('https://api.example.com/data');
+  return res.json();
+}
+
+export default async function Page() {
+  const data = await getData();
+  
+  return (
+    <main>
+      <h1>{data.title}</h1>
+      <p>{data.description}</p>
+    </main>
+  );
+}
+```
+
+### 与客户端组件结合
+
+```typescript
+// components/client-component.tsx
+'use client';
+
+export default function ClientComponent({ data }) {
+  return (
+    <div onClick={() => console.log(data)}>
+      {data.title}
+    </div>
+  );
+}
+```
+
+## 最佳实践
+
+1. 将数据获取逻辑放在服务器组件中
+2. 只在必要时使用客户端组件
+3. 合理划分服务器组件和客户端组件的边界
+4. 利用服务器组件缓存机制优化性能

@@ -1,129 +1,53 @@
-import Link from "next/link";
-import Comments from "@/components/comments";
-import { formatDate } from "@/lib/utils";
-import { baseUrl } from "@/app/sitemap";
-import notFound from "@/app/not-found";
-import { CustomMDX } from "@/components/mdx";
-import { getBlogPosts, getWeekly } from "@/lib/server-utils";
+import GiscusComments from "@/components/giscus-comments";
+import CustomMDX from "@/components/mdx-remote";
+import "@/styles/github-dark.css";
+import fs from "fs";
+import matter from "gray-matter";
+import path from "path";
+import { Suspense } from "react";
+import rehypeHighlight from "rehype-highlight";
 
-export async function generateStaticParams() {
-  const posts = getWeekly();
+const options = {
+  mdxOptions: {
+    remarkPlugins: [],
+    rehypePlugins: [rehypeHighlight],
+  },
+};
 
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const slug = (await params).slug;
+  const contentDir = path.join(process.cwd(), "public", "posts");
+  const filePath = path.join(contentDir, `${slug}.mdx`);
 
-type Params = Promise<{ slug: string }>;
-
-export async function generateMetadata(props: { params: Params }) {
-  const params = await props.params;
-  const post = getWeekly().find((post) => post.slug === params.slug);
-  if (!post) {
-    return;
+  if (!fs.existsSync(filePath)) {
+    return <div>Post not found</div>;
   }
 
-  const {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post.metadata;
-
-  const ogImage = image
-    ? image
-    : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "article",
-      publishedTime,
-      url: `${baseUrl}/weekl/${post.slug}`,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage],
-    },
-  };
-}
-
-export default async function Blog(props: { params: Params }) {
-  const params = await props.params;
-
-  const post = getBlogPosts().find((post) => post.slug === params.slug)!;
-
-  if (!post) {
-    notFound();
-  }
+  const content = fs.readFileSync(filePath, "utf8");
+  const { data: frontmatter, content: mdxContent } = matter(content);
 
   return (
-    <section>
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
-            image: post.metadata.image
-              ? post.metadata.image
-              : `/og?title=${encodeURIComponent(post.metadata.title)}`,
-            url: `${baseUrl}/blog/${post.slug}`,
-            author: {
-              "@type": "Person",
-              name: "My Portfolio",
-            },
-          }),
-        }}
-      />
-      <h1 className="title text-2xl font-semibold tracking-tighter">
-        {post.metadata.title}
-      </h1>
-      <div className="mt-2 mb-8 flex items-center justify-start space-x-2 text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          Writen by kaiyang at {formatDate(post.metadata.publishedAt)}
-        </p>
-        <span className="text-neutral-400 dark:text-neutral-500">|</span>
-        <Link
-          href={`/blog/category/${post.metadata.category}`}
-          className="text-neutral-600 hover:text-red-900"
-        >
-          {post.metadata.category}
-        </Link>
-        <span className="text-neutral-400 dark:text-neutral-500">|</span>
-        {post.metadata.tags.map((tag) => (
-          <Link
-            key={tag}
-            href={`/blog/tag/${tag}`}
-            className="text-neutral-600 hover:text-red-900"
-          >
-            #{tag}
-          </Link>
-        ))}
-      </div>
-      <article className="prose">
-        <CustomMDX source={post.content} />
-      </article>
+    <article className="prose prose-neutral max-w-none">
+      <h1 className="mb-2">{frontmatter.title}</h1>
+      <time
+        dateTime={frontmatter.publishDate}
+        className="text-sm text-neutral-500"
+      >
+        {new Date(frontmatter.publishDate).toLocaleDateString("zh-CN")}
+      </time>
       <div className="mt-8">
-        <h2 className="mb-4 text-2xl font-medium tracking-tighter">Comments</h2>
-        <div className="giscus-container">
-          <Comments />
-        </div>
+        <Suspense fallback={<>Loading...</>}>
+          {/* <MDXRemote source={mdxContent} /> */}
+          <CustomMDX source={mdxContent} options={options} />
+        </Suspense>
       </div>
-    </section>
+      <div>
+        <GiscusComments />
+      </div>
+    </article>
   );
 }

@@ -1,49 +1,24 @@
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { baseUrl } from "./sitemap";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import Footer from "@/components/footer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const lxgwMono = localFont({
+  src: "./fonts/LXGWWenKaiMono-Regular.ttf",
+  variable: "--font-noto-sans",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+
+const notoSansSC = localFont({
+  src: "./fonts/NotoSansSC-Regular.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
-  title: {
-    default: "Kaiyang's Portfolio",
-    template: "%s | Kaiyang's Portfolio",
-  },
-  description: "This is kaiyang's portfolio.",
-  openGraph: {
-    title: "Kaiyang's Portfolio",
-    description: "This is kaiyang's portfolio.",
-    url: baseUrl,
-    siteName: "Kaiyang's Portfolio",
-    locale: "en_US",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+  title: "凯阳的备忘录",
+  description: "使用 Next.js 创建的个人开发备忘录",
 };
 
 export default function RootLayout({
@@ -52,17 +27,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-white text-black dark:bg-black dark:text-white mx-4 mt-8 flex min-h-screen max-w-4xl flex-col antialiased lg:mx-auto`}
+        className={cn(
+          lxgwMono.variable,
+          notoSansSC.variable,
+          "min-h-screen antialiased",
+        )}
+        style={{
+          fontFamily:
+            'var(--font-noto-sans), -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif',
+        }}
       >
-        <main className="mt-6 flex min-w-0 flex-1 flex-col px-2 md:px-0">
-          <Navbar />
+        <div className="mx-auto max-w-4xl px-6 py-8">
+          <Header />
           {children}
-        </main>
-        <div className="mt-auto py-4 text-center text-sm text-gray-500">
-          <Analytics />
-          <SpeedInsights />
           <Footer />
         </div>
       </body>

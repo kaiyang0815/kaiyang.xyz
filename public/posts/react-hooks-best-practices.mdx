@@ -1,0 +1,58 @@
+---
+title: "React Hooks 最佳实践：如何编写更好的函数组件"
+description: "探讨 React Hooks 的常见使用模式和最佳实践，帮助你编写更清晰、可维护的 React 组件。"
+draft: false
+publishDate: "2024-12-05"
+---
+
+## 为什么使用 Hooks？
+
+Hooks 的出现让函数组件变得更加强大，我们可以在不使用 class 组件的情况下使用状态和其他 React 特性。
+
+## 常见的 Hooks 使用模式
+
+### 1. 状态管理
+
+```typescript
+const [count, setCount] = useState(0);
+const increment = () => setCount(prev => prev + 1);
+```
+
+### 2. 副作用处理
+
+```typescript
+useEffect(() => {
+  document.title = `当前计数: ${count}`;
+}, [count]);
+```
+
+### 3. 自定义 Hooks
+
+```typescript
+function useWindowSize() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+    
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  return size;
+}
+```
+
+## 最佳实践建议
+
+1. 在组件顶层使用 Hooks
+2. 保持 Hooks 的调用顺序一致
+3. 使用 ESLint 插件检查 Hooks 的使用
+4. 适当拆分复杂的组件逻辑到自定义 Hooks

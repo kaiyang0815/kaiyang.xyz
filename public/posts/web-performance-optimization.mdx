@@ -1,0 +1,83 @@
+---
+title: "Web 性能优化：提升用户体验的关键技巧"
+description: "探讨提升网站性能的各种技术和最佳实践，从加载速度到运行时性能的全方位优化。"
+draft: false
+publishDate: "2024-11-20"
+---
+
+## 性能优化的重要性
+
+网站性能直接影响用户体验和转化率。研究表明，页面加载时间每增加 1 秒，用户流失率就会显著增加。
+
+## 关键性能指标
+
+### 1. Core Web Vitals
+
+- LCP (Largest Contentful Paint)
+- FID (First Input Delay)
+- CLS (Cumulative Layout Shift)
+
+## 优化技术
+
+### 1. 资源优化
+
+```javascript
+// 使用动态导入
+const MyComponent = dynamic(() => import('./MyComponent'), {
+  loading: () => <Loading />,
+});
+```
+
+### 2. 图片优化
+
+```jsx
+// 使用现代图片格式和响应式图片
+<Image
+  src="/hero.webp"
+  alt="Hero image"
+  width={1200}
+  height={600}
+  priority
+/>
+```
+
+### 3. 代码分割
+
+```javascript
+// 路由级别的代码分割
+const routes = {
+  '/': () => import('./pages/Home'),
+  '/about': () => import('./pages/About'),
+};
+```
+
+## 性能监控
+
+### 1. 使用性能监控工具
+
+```javascript
+// 使用 Web Vitals 收集性能数据
+import { getCLS, getFID, getLCP } from 'web-vitals';
+
+function sendToAnalytics({ name, delta, id }) {
+  // 发送性能数据到分析服务
+  analytics.send({
+    metric: name,
+    value: delta,
+    id: id,
+  });
+}
+
+getCLS(sendToAnalytics);
+getFID(sendToAnalytics);
+getLCP(sendToAnalytics);
+```
+
+## 优化清单
+
+1. 使用适当的缓存策略
+2. 优化关键渲染路径
+3. 实施懒加载
+4. 压缩和优化资源
+5. 使用 CDN
+6. 优化字体加载

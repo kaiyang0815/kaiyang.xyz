@@ -1,0 +1,28 @@
+---
+title: "为 List 中的每一项添加 Sheet"
+description: "When the sheet is placed outside the ForEach, use id to specify the data for the sheet"
+draft: false
+publishDate: 2024-09-06
+---
+
+## Use id to specify the data for the sheet
+
+当在ForEach中的每一项添加Sheet时，可以使用id来指定Sheet中的数据，保证打开的sheet是对应列表项的。
+
+```swift
+@State private var selectedMind: Mind? = nil
+
+ForEach(filterMinds, id: \.id) { mind in
+	Text(mind)
+		.contextMenu {
+			Button(role: .destructive) {
+			    removeMind(mind)
+			} label: {
+			    Label("Delete", systemImage: "trash")
+			}
+		}
+}
+.sheet(isPresented: $showEditMindView) {
+    EditMindView(mind: selectedMind)
+}
+```

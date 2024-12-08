@@ -1,0 +1,83 @@
+---
+title: "TypeScript 高级特性：提升代码类型安全"
+description: "探索 TypeScript 的高级类型系统和特性，编写更安全、可维护的代码。"
+draft: false
+publishDate: "2024-11-25"
+---
+
+## 高级类型特性
+
+TypeScript 提供了丰富的类型系统，让我们能够构建类型安全的应用程序。
+
+### 1. 泛型
+
+```typescript
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+// 使用
+const str = identity("Hello"); // 类型为 string
+const num = identity(42);      // 类型为 number
+```
+
+### 2. 条件类型
+
+```typescript
+type IsString<T> = T extends string ? true : false;
+
+// 使用
+type A = IsString<string>;  // true
+type B = IsString<number>;  // false
+```
+
+### 3. 映射类型
+
+```typescript
+type Readonly<T> = {
+  readonly [P in keyof T]: T[P];
+};
+
+interface User {
+  name: string;
+  age: number;
+}
+
+type ReadonlyUser = Readonly<User>;
+```
+
+## 实用工具类型
+
+### 1. Partial
+
+```typescript
+interface Todo {
+  title: string;
+  description: string;
+}
+
+function updateTodo(todo: Todo, fieldsToUpdate: Partial<Todo>) {
+  return { ...todo, ...fieldsToUpdate };
+}
+```
+
+### 2. Pick 和 Omit
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+type PublicUser = Omit<User, 'password'>;
+type LoginCredentials = Pick<User, 'email' | 'password'>;
+```
+
+## 类型安全最佳实践
+
+1. 使用严格模式（strict: true）
+2. 避免使用 any 类型
+3. 利用类型推断
+4. 合理使用类型断言

@@ -1,0 +1,100 @@
+---
+title: "Git 工作流程：团队协作最佳实践"
+description: "介绍 Git 在团队开发中的最佳实践和常用工作流程，提高团队协作效率。"
+draft: false
+publishDate: "2024-11-10"
+---
+
+## Git Flow 工作流
+
+Git Flow 是一个广受欢迎的分支管理模型，适合大型项目的版本控制。
+
+### 主要分支
+
+- master/main：稳定的生产版本
+- develop：开发版本
+- feature/*：新功能开发
+- release/*：版本发布准备
+- hotfix/*：紧急修复
+
+## 常用命令和技巧
+
+### 1. 分支管理
+
+```bash
+# 创建并切换到新分支
+git checkout -b feature/new-feature
+
+# 合并分支
+git checkout develop
+git merge feature/new-feature --no-ff
+```
+
+### 2. 提交规范
+
+```bash
+# 好的提交信息格式
+git commit -m "feat: 添加用户认证功能
+
+- 实现登录接口
+- 添加 JWT 认证
+- 集成单元测试"
+```
+
+### 3. 撤销操作
+
+```bash
+# 撤销最后一次提交
+git reset --soft HEAD^
+
+# 撤销工作区修改
+git checkout -- file.txt
+```
+
+## 团队协作技巧
+
+### 1. Pull Request 流程
+
+1. 从主分支创建特性分支
+2. 在特性分支上开发
+3. 提交 Pull Request
+4. 代码审查
+5. 合并到主分支
+
+### 2. 代码审查清单
+
+- 代码风格是否符合规范
+- 是否有适当的测试覆盖
+- 是否有潜在的性能问题
+- 是否有安全隐患
+
+## 常见问题解决
+
+### 1. 解决冲突
+
+```bash
+# 更新分支
+git fetch origin
+git rebase origin/develop
+
+# 解决冲突后
+git add .
+git rebase --continue
+```
+
+### 2. 清理分支
+
+```bash
+# 删除已合并的本地分支
+git branch --merged | grep -v "\*" | xargs -n 1 git branch -d
+
+# 清理远程分支引用
+git remote prune origin
+```
+
+## 最佳实践建议
+
+1. 经常进行小规模提交
+2. 保持提交信息清晰明确
+3. 定期同步主分支的更新
+4. 使用 .gitignore 管理忽略文件

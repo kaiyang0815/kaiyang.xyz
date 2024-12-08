@@ -1,0 +1,119 @@
+---
+title: "现代 CSS 新特性：构建更好的用户界面"
+description: "探索 CSS 的最新特性和技术，包括容器查询、嵌套规则等新功能。"
+draft: false
+publishDate: "2024-11-15"
+---
+
+## CSS 容器查询
+
+容器查询允许我们基于父容器的大小而不是视口大小来设置样式。
+
+```css
+.container {
+  container-type: inline-size;
+}
+
+@container (min-width: 400px) {
+  .card {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+  }
+}
+```
+
+## CSS 嵌套
+
+新的嵌套语法让 CSS 更易于组织和维护。
+
+```css
+.card {
+  background: white;
+  padding: 1rem;
+  
+  & .title {
+    color: navy;
+    
+    &:hover {
+      color: blue;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    & {
+      padding: 2rem;
+    }
+  }
+}
+```
+
+## CSS 自定义属性（变量）
+
+```css
+:root {
+  --primary-color: #3490dc;
+  --secondary-color: #38a169;
+}
+
+.button {
+  background: var(--primary-color);
+  
+  &:hover {
+    background: var(--secondary-color);
+  }
+}
+```
+
+## 新的选择器
+
+### :has() 选择器
+
+```css
+/* 选择包含 p 元素的 article */
+article:has(p) {
+  padding: 1rem;
+}
+
+/* 选择后面有图片的段落 */
+p:has(+ img) {
+  margin-bottom: 2rem;
+}
+```
+
+### :is() 和 :where() 选择器
+
+```css
+/* 简化选择器组 */
+:is(header, main, footer) p {
+  line-height: 1.5;
+}
+
+/* 降低优先级 */
+:where(article, aside) a {
+  color: blue;
+}
+```
+
+## 布局技巧
+
+### 子网格（Subgrid）
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.item {
+  grid-column: span 3;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+```
+
+## 最佳实践
+
+1. 合理使用新特性
+2. 注意浏览器兼容性
+3. 使用渐进增强策略
+4. 保持代码模块化
