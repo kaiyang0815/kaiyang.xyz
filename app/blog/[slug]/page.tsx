@@ -6,11 +6,13 @@ import matter from "gray-matter";
 import path from "path";
 import { Suspense } from "react";
 import rehypeHighlight from "rehype-highlight";
+import rehypeMathjax from "rehype-mathjax";
+import remarkMath from "remark-math";
 
 const options = {
   mdxOptions: {
-    remarkPlugins: [],
-    rehypePlugins: [rehypeHighlight],
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeHighlight, rehypeMathjax],
   },
 };
 
