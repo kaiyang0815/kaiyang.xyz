@@ -1,5 +1,4 @@
 import Footer from "@/components/footer";
-import Header from "@/components/header";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -40,7 +39,6 @@ export default function RootLayout({
         }}
       >
         <div className="mx-auto max-w-4xl px-6 py-8">
-          <Header />
           {children}
           <Footer />
         </div>

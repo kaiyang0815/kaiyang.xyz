@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import PaginationNav from "@/components/pagination-nav";
 import PostList, { getPosts } from "@/components/post-list";
 
@@ -21,6 +22,7 @@ export default async function Home({
 
   return (
     <main className="flex flex-col justify-start space-y-4">
+      <Header />
       <div>
         <h1 className="font-bold">近期文章</h1>
       </div>
