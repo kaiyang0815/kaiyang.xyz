@@ -6,8 +6,8 @@ export default function Footer() {
       <div className="flex justify-between gap-4">
         <span>© {new Date().getFullYear()} 凯阳</span>
         <div className="flex gap-4">
-          <Link href="https://github.com/kaiyang">GitHub</Link>
-          <Link href="https://twitter.com/kaiyang0815">Twitter</Link>
+          <Link href="https://github.com/kaiyang0815">GitHub</Link>
+          <Link href="https://twitter.com/KaiyW24184">Twitter</Link>
         </div>
       </div>
     </footer>

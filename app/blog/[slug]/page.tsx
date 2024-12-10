@@ -3,14 +3,18 @@ import CustomMDX from "@/components/mdx-remote";
 import "@/styles/github-dark.css";
 import fs from "fs";
 import matter from "gray-matter";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
 import path from "path";
 import { Suspense } from "react";
 import rehypeHighlight from "rehype-highlight";
+import rehypeMathjax from "rehype-mathjax";
+import remarkMath from "remark-math";
 
 const options = {
   mdxOptions: {
-    remarkPlugins: [],
-    rehypePlugins: [rehypeHighlight],
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeHighlight, rehypeMathjax],
   },
 };
 
@@ -32,7 +36,13 @@ export default async function Page({
 
   return (
     <article className="prose prose-neutral max-w-none">
-      <h1 className="mb-2">{frontmatter.title}</h1>
+      <div className="mb-4 flex flex-row items-center gap-1">
+        <ChevronLeft size={18} />
+        <Link href="/" className="no-underline hover:underline">
+          返回首页
+        </Link>
+      </div>
+      <h1 className="my-2">{frontmatter.title}</h1>
       <time
         dateTime={frontmatter.publishDate}
         className="text-sm text-neutral-500"

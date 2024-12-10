@@ -1,12 +1,11 @@
 import Footer from "@/components/footer";
-import Header from "@/components/header";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const lxgwMono = localFont({
-  src: "./fonts/LXGWWenKaiMono-Regular.ttf",
+const lxgwMonoScreen = localFont({
+  src: "./fonts/LXGWWenKaiMonoGBScreen.ttf",
   variable: "--font-noto-sans",
 });
 
@@ -30,7 +29,7 @@ export default function RootLayout({
     <html lang="zh-CN">
       <body
         className={cn(
-          lxgwMono.variable,
+          lxgwMonoScreen.variable,
           notoSansSC.variable,
           "min-h-screen antialiased",
         )}
@@ -40,7 +39,6 @@ export default function RootLayout({
         }}
       >
         <div className="mx-auto max-w-4xl px-6 py-8">
-          <Header />
           {children}
           <Footer />
         </div>
