@@ -1,5 +1,6 @@
 import GiscusComments from "@/components/giscus-comments";
 import CustomMDX from "@/components/mdx-remote";
+import ProgressBar from "@/components/progress-bar";
 import "@/styles/github-dark.css";
 import fs from "fs";
 import matter from "gray-matter";
@@ -36,6 +37,7 @@ export default async function Page({
 
   return (
     <article className="prose prose-neutral max-w-none">
+      <ProgressBar />
       <div className="mb-4 flex flex-row items-center gap-1">
         <ChevronLeft size={18} />
         <Link href="/" className="no-underline hover:underline">
