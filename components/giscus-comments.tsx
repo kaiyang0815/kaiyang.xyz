@@ -1,8 +1,11 @@
 "use client";
 
 import Giscus from "@giscus/react";
+import { useTheme } from "next-themes";
 
 export default function GiscusComments() {
+  const { theme } = useTheme();
+
   return (
     <Giscus
       id="comments"
@@ -14,7 +17,7 @@ export default function GiscusComments() {
       reactionsEnabled="1"
       emitMetadata="0"
       inputPosition="bottom"
-      theme="light"
+      theme={theme}
       lang="en"
       loading="lazy"
     />

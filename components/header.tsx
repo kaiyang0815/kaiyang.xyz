@@ -1,7 +1,7 @@
 "use client";
 
 import { ModeToggle } from "@/components/mode-toggle";
-import RandomSentence from "@/components/random-sentence";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -21,12 +21,13 @@ export default function Header() {
         }}
         viewport={{ once: true }}
       >
-        <h1 className="text-4xl font-black">凯阳的备忘录</h1>
+        <div className="flex flex-row items-center justify-between space-x-4">
+          <h1 className="text-4xl font-black">凯阳的备忘录</h1>
+          <ModeToggle />
+        </div>
       </motion.div>
 
-      <div className="text-neutral-5 text-sm">
-        <RandomSentence />
-      </div>
+      <div className="text-neutral-5 text-sm">{/* <RandomSentence /> */}</div>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{
@@ -34,18 +35,19 @@ export default function Header() {
           transition: { duration: 2 },
         }}
       >
-        <div className="flex justify-between">
-          <nav className="flex gap-6 text-lg">
-            <Link
-              href="/"
-              className={cn(
-                path == "/" ? "text-neutral-900" : "text-neutral-500",
-                "transition-colors hover:text-neutral-900",
-              )}
-            >
-              首页
-            </Link>
-            {/* <Link
+        <nav className="flex gap-6 text-lg">
+          <Link
+            href="/"
+            className={cn(
+              path == "/"
+                ? "text-neutral-900 dark:text-neutral-100"
+                : "text-neutral-500 dark:text-neutral-400",
+              "transition-colors hover:text-neutral-900 hover:dark:text-neutral-100",
+            )}
+          >
+            首页
+          </Link>
+          {/* <Link
             href="/projects"
             className={cn(
               path == "/projects" ? "text-neutral-900" : "text-neutral-500",
@@ -54,20 +56,20 @@ export default function Header() {
           >
             项目
           </Link> */}
-            <Link
-              href="/about"
-              className={cn(
-                path == "/about" ? "text-neutral-900" : "text-neutral-500",
-                "transition-colors hover:text-neutral-900",
-              )}
-            >
-              关于
-            </Link>
-          </nav>
-          <ModeToggle />
-        </div>
+          <Link
+            href="/about"
+            className={cn(
+              path == "/about"
+                ? "text-neutral-900 dark:text-neutral-100"
+                : "text-neutral-500 dark:text-neutral-400",
+              "transition-colors hover:text-neutral-900 hover:dark:text-neutral-100",
+            )}
+          >
+            关于
+          </Link>
+        </nav>
       </motion.div>
-      <hr />
+      <Separator />
     </header>
   );
 }

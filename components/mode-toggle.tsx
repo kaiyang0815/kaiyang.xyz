@@ -10,9 +10,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
 
 export function ModeToggle() {
+  const [mounted, setMounted] = useState(false);
   const { setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // Return null on server-side and first render
+  }
 
   return (
     <DropdownMenu>
