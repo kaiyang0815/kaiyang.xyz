@@ -1,4 +1,5 @@
 import Footer from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -40,12 +41,19 @@ export default function RootLayout({
             'var(--font-noto-sans), -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif',
         }}
       >
-        <div className="mx-auto max-w-4xl px-6 py-8">
-          {children}
-          <Analytics />
-          <SpeedInsights />
-          <Footer />
-        </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="mx-auto max-w-4xl px-6 py-8">
+            {children}
+            <Analytics />
+            <SpeedInsights />
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

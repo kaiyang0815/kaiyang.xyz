@@ -1,5 +1,7 @@
 "use client";
 
+import { ModeToggle } from "@/components/mode-toggle";
+import RandomSentence from "@/components/random-sentence";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -22,7 +24,9 @@ export default function Header() {
         <h1 className="text-4xl font-black">凯阳的备忘录</h1>
       </motion.div>
 
-      <div className="text-neutral-5 text-sm">{/* <RandomSentence /> */}</div>
+      <div className="text-neutral-5 text-sm">
+        <RandomSentence />
+      </div>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{
@@ -30,17 +34,18 @@ export default function Header() {
           transition: { duration: 2 },
         }}
       >
-        <nav className="flex gap-6 text-lg">
-          <Link
-            href="/"
-            className={cn(
-              path == "/" ? "text-neutral-900" : "text-neutral-500",
-              "transition-colors hover:text-neutral-900",
-            )}
-          >
-            首页
-          </Link>
-          {/* <Link
+        <div className="flex justify-between">
+          <nav className="flex gap-6 text-lg">
+            <Link
+              href="/"
+              className={cn(
+                path == "/" ? "text-neutral-900" : "text-neutral-500",
+                "transition-colors hover:text-neutral-900",
+              )}
+            >
+              首页
+            </Link>
+            {/* <Link
             href="/projects"
             className={cn(
               path == "/projects" ? "text-neutral-900" : "text-neutral-500",
@@ -49,16 +54,18 @@ export default function Header() {
           >
             项目
           </Link> */}
-          <Link
-            href="/about"
-            className={cn(
-              path == "/about" ? "text-neutral-900" : "text-neutral-500",
-              "transition-colors hover:text-neutral-900",
-            )}
-          >
-            关于
-          </Link>
-        </nav>
+            <Link
+              href="/about"
+              className={cn(
+                path == "/about" ? "text-neutral-900" : "text-neutral-500",
+                "transition-colors hover:text-neutral-900",
+              )}
+            >
+              关于
+            </Link>
+          </nav>
+          <ModeToggle />
+        </div>
       </motion.div>
       <hr />
     </header>
