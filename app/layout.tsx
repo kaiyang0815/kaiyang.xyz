@@ -1,5 +1,7 @@
 import Footer from "@/components/footer";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -40,6 +42,8 @@ export default function RootLayout({
       >
         <div className="mx-auto max-w-4xl px-6 py-8">
           {children}
+          <Analytics />
+          <SpeedInsights />
           <Footer />
         </div>
       </body>
