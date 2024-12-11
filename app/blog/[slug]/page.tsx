@@ -1,5 +1,7 @@
 import GiscusComments from "@/components/giscus-comments";
 import CustomMDX from "@/components/mdx-remote";
+import { ModeToggle } from "@/components/mode-toggle";
+import ProgressBar from "@/components/progress-bar";
 import "@/styles/github-dark.css";
 import fs from "fs";
 import matter from "gray-matter";
@@ -36,13 +38,17 @@ export default async function Page({
 
   return (
     <article className="prose prose-neutral max-w-none">
+      <ProgressBar />
       <div className="mb-4 flex flex-row items-center gap-1">
         <ChevronLeft size={18} />
         <Link href="/" className="no-underline hover:underline">
           返回首页
         </Link>
       </div>
-      <h1 className="my-2">{frontmatter.title}</h1>
+      <div className="flex flex-row items-center justify-between">
+        <h1 className="my-2">{frontmatter.title}</h1>
+        <ModeToggle />
+      </div>
       <time
         dateTime={frontmatter.publishDate}
         className="text-sm text-neutral-500"

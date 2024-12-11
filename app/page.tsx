@@ -26,7 +26,7 @@ export default async function Home({
       <div>
         <PostList posts={currentPosts} />
         {totalPages > 1 && (
-          <div className="mt-10">
+          <div className="mt-16">
             <PaginationNav
               totalPages={totalPages}
               currentPage={validatedPage}

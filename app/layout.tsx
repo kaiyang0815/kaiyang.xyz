@@ -1,5 +1,8 @@
 import Footer from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -26,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
       <body
         className={cn(
           lxgwMonoScreen.variable,
@@ -38,10 +41,19 @@ export default function RootLayout({
             'var(--font-noto-sans), -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif',
         }}
       >
-        <div className="mx-auto max-w-4xl px-6 py-8">
-          {children}
-          <Footer />
-        </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="mx-auto max-w-4xl px-6 py-8">
+            {children}
+            <Analytics />
+            <SpeedInsights />
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

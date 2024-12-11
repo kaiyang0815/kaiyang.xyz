@@ -3,7 +3,13 @@
 import GiscusComments from "@/components/giscus-comments";
 import Header from "@/components/header";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
+
+const imageStyle = {
+  borderRadius: "50%",
+  border: "1px solid #fff",
+};
 
 export default function AboutPage() {
   return (
@@ -16,6 +22,15 @@ export default function AboutPage() {
         className="prose prose-neutral max-w-none space-y-4"
       >
         <h1 className="mb-8">关于我</h1>
+
+        <Image
+          src="/images/avatar.png"
+          alt="Avatar"
+          width={150}
+          height={150}
+          style={imageStyle}
+          className="mx-auto"
+        />
 
         <p>
           👋 你好！我是凯阳，一名专注于 iOS
