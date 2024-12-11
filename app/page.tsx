@@ -24,9 +24,6 @@ export default async function Home({
     <main className="flex flex-col justify-start space-y-4">
       <Header />
       <div>
-        <h1 className="font-bold">近期文章</h1>
-      </div>
-      <div>
         <PostList posts={currentPosts} />
         {totalPages > 1 && (
           <div className="mt-10">
