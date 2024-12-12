@@ -1,6 +1,5 @@
 import GiscusComments from "@/components/giscus-comments";
 import CustomMDX from "@/components/mdx-remote";
-import { ModeToggle } from "@/components/mode-toggle";
 import ProgressBar from "@/components/progress-bar";
 import "@/styles/github-dark.css";
 import fs from "fs";
@@ -45,10 +44,10 @@ export default async function Page({
           返回首页
         </Link>
       </div>
-      <div className="flex flex-row items-center justify-between">
-        <h1 className="my-2">{frontmatter.title}</h1>
+      <h1 className="my-2">{frontmatter.title}</h1>
+      {/* <div className="flex flex-row items-center justify-between">
         <ModeToggle />
-      </div>
+      </div> */}
       <time
         dateTime={frontmatter.publishDate}
         className="text-sm text-neutral-500"
