@@ -25,7 +25,7 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
-  const contentDir = path.join(process.cwd(), "public", "posts");
+  const contentDir = path.join(process.cwd(), "_posts");
   const filePath = path.join(contentDir, `${slug}.mdx`);
 
   if (!fs.existsSync(filePath)) {

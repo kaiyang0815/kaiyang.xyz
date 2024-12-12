@@ -1,8 +1,7 @@
+import { formatDate } from "@/lib/format-date";
 import { writeFileSync } from "fs";
 import { join } from "path";
-import { formatDate } from "./format-date";
 
-// ✅ write to file SYNCHRONOUSLY
 function syncWriteFile(filename: string, data: any) {
   /**
    * flags:
@@ -33,4 +32,4 @@ publishDate: ${formatDate(date)}
 ---
 `;
 console.log(metadata);
-syncWriteFile("../public/posts/" + title + ".mdx", metadata);
+syncWriteFile("../_posts/" + title + ".mdx", metadata);
