@@ -1,7 +1,7 @@
 import GiscusComments from "@/components/giscus-comments";
 import CustomMDX from "@/components/mdx-remote";
-import { ModeToggle } from "@/components/mode-toggle";
 import ProgressBar from "@/components/progress-bar";
+import TableOfContents from "@/components/table-of-content";
 import "@/styles/github-dark.css";
 import fs from "fs";
 import matter from "gray-matter";
@@ -45,16 +45,22 @@ export default async function Page({
           返回首页
         </Link>
       </div>
-      <div className="flex flex-row items-center justify-between">
-        <h1 className="my-2">{frontmatter.title}</h1>
+      <h1 className="my-2">{frontmatter.title}</h1>
+      {/* <div className="flex flex-row items-center justify-between">
         <ModeToggle />
-      </div>
+      </div> */}
       <time
         dateTime={frontmatter.publishDate}
-        className="text-sm text-neutral-500"
+        className="text-sm text-neutral-500 dark:text-neutral-400"
       >
         {new Date(frontmatter.publishDate).toLocaleDateString("zh-CN")}
       </time>
+      <div className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
+        {frontmatter.description && <p>{frontmatter.description}</p>}
+      </div>
+      <div className="my-8">
+        <TableOfContents content={mdxContent} />
+      </div>
       <div className="mt-8">
         <Suspense fallback={<>Loading...</>}>
           {/* <MDXRemote source={mdxContent} /> */}

@@ -1,7 +1,5 @@
 "use client";
 
-import { ModeToggle } from "@/components/mode-toggle";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -21,18 +19,16 @@ export default function Header() {
         }}
         viewport={{ once: true }}
       >
-        <div className="flex flex-row items-center justify-between space-x-4">
-          <h1 className="text-4xl font-black">凯阳的备忘录</h1>
-          <ModeToggle />
-        </div>
+        <h1 className="text-4xl font-black">凯阳的备忘录</h1>
       </motion.div>
 
       <div className="text-neutral-5 text-sm">{/* <RandomSentence /> */}</div>
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 0, x: -100 }}
         animate={{
           opacity: 1,
-          transition: { duration: 2 },
+          x: 0,
+          transition: { duration: 0.5 },
         }}
       >
         <nav className="flex gap-6 text-lg">
@@ -69,7 +65,7 @@ export default function Header() {
           </Link>
         </nav>
       </motion.div>
-      <Separator />
+      {/* <Separator /> */}
     </header>
   );
 }

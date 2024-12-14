@@ -19,7 +19,7 @@ export default function AboutPage() {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="prose prose-neutral max-w-none space-y-4"
+        className="prose prose-neutral max-w-none space-y-8"
       >
         <h1 className="mb-8">关于我</h1>
 
