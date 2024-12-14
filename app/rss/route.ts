@@ -2,7 +2,7 @@ import { getPosts } from "@/components/post-list";
 import { Configuration } from "@/configuration";
 
 export async function GET() {
-  let allBlogs = await getPosts();
+  const allBlogs = await getPosts();
 
   const itemsXml = allBlogs
     .sort(

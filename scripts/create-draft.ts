@@ -32,4 +32,4 @@ publishDate: ${formatDate(date)}
 ---
 `;
 console.log(metadata);
-syncWriteFile("../_posts/" + title + ".mdx", metadata);
+syncWriteFile("../public/posts/" + title + ".mdx", metadata);

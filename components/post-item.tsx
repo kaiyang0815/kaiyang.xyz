@@ -22,7 +22,7 @@ export default function PostItem({ post }: PostItemProps) {
       <div className="flex flex-col py-2 md:flex-row md:gap-2">
         <time
           dateTime={post.frontmatter.publishDate}
-          className="mb-1 text-sm md:mb-0 md:mr-2 md:text-base"
+          className="mb-1 text-sm text-neutral-400 dark:text-neutral-300 md:mb-0 md:mr-2 md:text-base"
         >
           {formatDate(post.frontmatter.publishDate)}
         </time>

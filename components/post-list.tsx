@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import PostItem from "./post-item";
 
 export async function getPosts(): Promise<Post[]> {
-  const contentDir = path.join(process.cwd(), "_posts");
+  const contentDir = path.join(process.cwd(), "public", "posts");
   const files = fs.readdirSync(contentDir);
   const posts = files
     .filter((file) => file.endsWith(".mdx"))

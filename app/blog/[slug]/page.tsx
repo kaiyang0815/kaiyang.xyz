@@ -1,6 +1,7 @@
 import GiscusComments from "@/components/giscus-comments";
 import CustomMDX from "@/components/mdx-remote";
 import ProgressBar from "@/components/progress-bar";
+import TableOfContents from "@/components/table-of-content";
 import "@/styles/github-dark.css";
 import fs from "fs";
 import matter from "gray-matter";
@@ -25,7 +26,7 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
-  const contentDir = path.join(process.cwd(), "_posts");
+  const contentDir = path.join(process.cwd(), "public", "posts");
   const filePath = path.join(contentDir, `${slug}.mdx`);
 
   if (!fs.existsSync(filePath)) {
@@ -50,10 +51,16 @@ export default async function Page({
       </div> */}
       <time
         dateTime={frontmatter.publishDate}
-        className="text-sm text-neutral-500"
+        className="text-sm text-neutral-500 dark:text-neutral-400"
       >
         {new Date(frontmatter.publishDate).toLocaleDateString("zh-CN")}
       </time>
+      <div className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
+        {frontmatter.description && <p>{frontmatter.description}</p>}
+      </div>
+      <div className="my-8">
+        <TableOfContents content={mdxContent} />
+      </div>
       <div className="mt-8">
         <Suspense fallback={<>Loading...</>}>
           {/* <MDXRemote source={mdxContent} /> */}
