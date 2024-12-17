@@ -19,7 +19,8 @@ function syncWriteFile(filename: string, data: any) {
   //   return contents;
 }
 
-const title = process.argv.slice(2);
+const fillName = process.argv.slice(2, 3);
+const title = process.argv.slice(3);
 const desc = "";
 const draft = "true";
 const date = new Date().toLocaleDateString();
@@ -32,4 +33,4 @@ publishDate: ${formatDate(date)}
 ---
 `;
 console.log(metadata);
-syncWriteFile("../public/posts/" + title + ".mdx", metadata);
+syncWriteFile("../public/posts/" + fillName + ".mdx", metadata);

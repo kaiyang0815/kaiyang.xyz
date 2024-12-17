@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Configuration } from "@/configuration";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -19,7 +20,7 @@ const notoSansSC = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "凯阳的备忘录",
+  title: Configuration.siteName,
   description: "使用 Next.js 创建的个人开发备忘录",
 };
 
