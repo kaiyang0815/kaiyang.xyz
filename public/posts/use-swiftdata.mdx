@@ -1,0 +1,37 @@
+---
+title: "使用SwiftData进行开发"
+description: ""
+draft: true
+publishDate: 2024-12-16
+---
+
+## 简介
+
+SwiftData是Apple在2023年WWDC上发布的一个新的数据管理框架，它基于Swift语言和Core Data技术，旨在简化iOS、iPadOS、macOS和watchOS应用程序中的数据管理。
+
+目前，SwiftData仍旧处于早期阶段，但已经可以用于生产环境。
+
+本文将介绍SwiftData的基本概念和用法，并使用其构建一个简单的待办事项应用。
+
+## 基本用法
+
+### @Model
+
+SwiftData中，所有需要存储的数据都必须继承自`@Model`协议。
+
+且只能是 class 类型，不能是 struct。
+
+```swift
+@Model
+class Item {
+  var id: UUID
+  var title: String
+  var subTitle: String
+  var isCompleted: Bool
+
+  init(title: String, subTitle: String, isCompleted: Bool = false) {
+    self.id = UUID()
+    self.title = title
+  }
+}
+```
