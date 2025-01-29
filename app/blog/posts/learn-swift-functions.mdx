@@ -1,0 +1,81 @@
+---
+title: 学习 Swift：函数
+publishedAt: 2025-01-19T23:46:53.794Z
+summary: 关于 Swift 中函数的学习笔记
+---
+
+## 如何定义一个函数并调用它
+
+在 Swift 中，通过关键字 func 来定义一个函数，紧跟在关键字后面的则是函数名，通过函数名来调用函数。
+
+下面定义了一个函数：
+
+```swift
+func greet(to: String) -> String {
+  let greeting = "你好，" + to + "！"
+  return greeting
+}
+let result = greet(to: "世界")
+print(result)
+```
+
+## 参数和返回值
+
+上述 `greet` 是一个具有 String 类型的参数的函数，其返回 String 类型的值。
+
+调用时，直接将字符串传递给参数 to 即可。
+
+参数可以不定义，这样的函数不接收外部的数据。
+
+```swift
+func sayHelloWorld() -> String {
+  return "Hello, world!"
+}
+```
+
+上述 `sayHelloWorld` 即是一个无参数函数，调用该函数时无需任何传递：
+
+```swift
+sayHelloWorld()
+```
+
+可以定义多个参数：
+
+```swift
+func greet(person: String, alreadyGreeted: Bool) -> String {
+    if alreadyGreeted {
+        return greetAgain(person: person)
+    } else {
+        return greet(person: person)
+    }
+}
+```
+
+在调用时按顺序传入参数即可。
+
+上述函数的都具有返回值，实际上函数的返回值也可以为空，在 Swift 中没有 Void 这样的定义，不声明返回值类型即可。
+
+```swift
+func greet(person: String) {
+    print("Hello, \(person)!")
+}
+```
+
+返回值同样可以为多个，通过括号来声明多个返回值的情况，此时返回了一个元组，返回值通过点符号取实际的值：
+
+```swift
+func minMax(array: [Int]) -> (min: Int, max: Int) {
+    var currentMin = array[0]
+    var currentMax = array[0]
+    for value in array[1..<array.count] {
+        if value < currentMin {
+            currentMin = value
+        } else if value > currentMax {
+            currentMax = value
+        }
+    }
+    return (currentMin, currentMax)
+}
+```
+
+在函数体中，return 关键字在函数体为单语句时是可以省略的，此时 return 会隐式执行。

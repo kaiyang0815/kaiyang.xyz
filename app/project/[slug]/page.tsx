@@ -1,19 +1,19 @@
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts } from "lib/server-utils";
+import { formatDate, getProjects } from "lib/server-utils";
 import { baseUrl } from "app/sitemap";
 
 export async function generateStaticParams() {
-    let posts = getBlogPosts();
+    let projects = getProjects();
 
-    return posts.map((post) => ({
-        slug: post.slug,
+    return projects.map((proj) => ({
+        slug: proj.slug,
     }));
 }
 
 export function generateMetadata({ params }) {
-    let post = getBlogPosts().find((post) => post.slug === params.slug);
-    if (!post) {
+    let proj = getProjects().find((proj) => proj.slug === params.slug);
+    if (!proj) {
         return;
     }
 
@@ -22,7 +22,7 @@ export function generateMetadata({ params }) {
         publishedAt: publishedTime,
         summary: description,
         image,
-    } = post.metadata;
+    } = proj.metadata;
     let ogImage = image
         ? image
         : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
@@ -35,7 +35,7 @@ export function generateMetadata({ params }) {
             description,
             type: "article",
             publishedTime,
-            url: `${baseUrl}/blog/${post.slug}`,
+            url: `${baseUrl}/project/${proj.slug}`,
             images: [
                 {
                     url: ogImage,
@@ -51,10 +51,10 @@ export function generateMetadata({ params }) {
     };
 }
 
-export default function Blog({ params }) {
-    let post = getBlogPosts().find((post) => post.slug === params.slug);
+export default function Page({ params }) {
+    let proj = getProjects().find((proj) => proj.slug === params.slug);
 
-    if (!post) {
+    if (!proj) {
         notFound();
     }
 
@@ -67,16 +67,16 @@ export default function Blog({ params }) {
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
                         "@type": "BlogPosting",
-                        headline: post.metadata.title,
-                        datePublished: post.metadata.publishedAt,
-                        dateModified: post.metadata.publishedAt,
-                        description: post.metadata.summary,
-                        image: post.metadata.image
-                            ? `${baseUrl}${post.metadata.image}`
+                        headline: proj.metadata.title,
+                        datePublished: proj.metadata.publishedAt,
+                        dateModified: proj.metadata.publishedAt,
+                        description: proj.metadata.summary,
+                        image: proj.metadata.image
+                            ? `${baseUrl}${proj.metadata.image}`
                             : `/og?title=${encodeURIComponent(
-                                  post.metadata.title
+                                  proj.metadata.title
                               )}`,
-                        url: `${baseUrl}/blog/${post.slug}`,
+                        url: `${baseUrl}/project/${proj.slug}`,
                         author: {
                             "@type": "Person",
                             name: "Kaiyang 的iOS开发记事本",
@@ -85,15 +85,15 @@ export default function Blog({ params }) {
                 }}
             />
             <h1 className="title font-semibold text-2xl tracking-tighter">
-                {post.metadata.title}
+                {proj.metadata.title}
             </h1>
             <div className="flex justify-between items-center mt-2 mb-8 text-sm">
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                    {formatDate(post.metadata.publishedAt)}
+                    {formatDate(proj.metadata.publishedAt)}
                 </p>
             </div>
             <article className="prose">
-                <CustomMDX source={post.content} />
+                <CustomMDX source={proj.content} />
             </article>
         </section>
     );

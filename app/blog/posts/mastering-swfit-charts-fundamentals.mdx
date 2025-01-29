@@ -1,0 +1,170 @@
+---
+title: 理解 Swift Charts：基础
+publishedAt: 2025-01-19T12:44:51Z
+summary: 本文介绍了Swift Charts 的基础用法，并构建一张显示记录的条形图
+---
+
+## 前言
+
+Swift Charts 是官方提供的用于绘制图表的库，该库提供了散点图、条形图（BarMark）、折线图、面积图和饼图等基础图表等绘制能力。
+
+本文会将所有的类型图表的基础用法都展示一遍，同时会介绍一些在实际使用中可能会用到的技巧。
+
+另外，本会还会涉及 SwiftData 和 SwiftUI 的基础用法，因此可能需要你对这些前置的知识有一定了解。
+
+## 定义数据结构
+
+我们定义一个 Transaction 类型作为记录交易数据的基础数据结构，其具体定义如下：
+
+```swift
+enum TransactionType: String, CaseIterable, Identifiable, Codable {
+    case income
+    case expense
+
+    var id: Self {
+        return self
+    }
+}
+
+@Model
+final class Transaction {
+    var id: UUID
+    var date: Date
+    var type: TransactionType
+    var amount: Double
+
+    init(
+        id: UUID = UUID(),
+        date: Date,
+        type: TransactionType,
+        amount: Double
+    ) {
+        self.id = id
+        self.date = date
+        self.type = type
+        self.amount = amount
+    }
+}
+```
+
+其中 type 代表交易类型，是一个 enum 类型，具有 income 和 expense 两种具体值。
+amount 代表交易的金额大小。
+
+然后定义示例数据：
+
+```swift
+struct PreviewData: PreviewModifier {
+    static func makeSharedContext() throws -> ModelContainer {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(
+            for: Transaction.self,
+            configurations: config
+        )
+
+        for transaction in SampleData.transactions {
+            container.mainContext.insert(transaction)
+        }
+
+        return container
+    }
+
+    func body(content: Content, context: ModelContainer) -> some View {
+        content.modelContainer(context)
+    }
+}
+
+extension PreviewTrait where T == Preview.ViewTraits {
+    @MainActor static var previewData: Self = .modifier(PreviewData())
+}
+
+struct SampleData {}
+
+extension SampleData {
+    @MainActor static let transactions: [Transaction] = [
+        Transaction(date: Date(), type: .income, amount: 1500.00),
+        Transaction(
+            date: Date().addingTimeInterval(-86400), type: .expense,
+            amount: 200.00),  // 昨天
+        Transaction(
+            date: Date().addingTimeInterval(-172800), type: .expense,
+            amount: 50.00),  // 两天前
+        Transaction(
+            date: Date().addingTimeInterval(-259200), type: .income,
+            amount: 800.00),  // 三天前
+        Transaction(
+            date: Date().addingTimeInterval(-345600), type: .expense,
+            amount: 120.00),  // 四天前
+    ]
+}
+```
+
+在 SampleData 中定义了 transactions 数组，用来表示五天内的交易记录。
+
+## 第一张图表
+
+### Chart
+
+SwiftUI 提供了 [Chart](https://developer.apple.com/documentation/charts/chart) 作为所有类型图表的基础视图，也就是说无论什么类型的图表都需要在其内部进行绘制，其定义如下：
+
+```swift
+@MainActor @preconcurrency
+struct Chart<Content> where Content : ChartContent
+```
+
+使用时需要将图表所需的数据传递给 [Chart](https://developer.apple.com/documentation/charts/chart) 后，再在其内部进行图表的绘制。
+
+具体来说，可以参考如下代码：
+
+```swift
+Chart(data, id: \.category) { item in
+    // 具体图表
+}
+```
+
+### BarMark
+
+利用上述示例数据，我们使用 BarMark 在 ScrollView 中实现一个条形图：
+
+```swift
+import Charts
+import SwiftData
+import SwiftUI
+
+struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var transactions: [Transaction]
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                Chart(transactions, id: \.id) { transaction in
+                    BarMark(
+                        x: .value("Date", transaction.date, unit: .day),
+                        y: .value("Amount", transaction.amount))
+                }
+                .padding(20)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.secondary.opacity(0.35), lineWidth: 1)
+                }
+                .padding()
+            }
+        }
+    }
+}
+
+#Preview(traits: .previewData) {
+    ContentView()
+}
+```
+
+效果如下：
+
+![BarMark example](@assets/images/mastering-swfit-charts-fundamentals-1.png)
+
+## 参考
+
+本文参考了官方文档和一些互联网博客文章，具体链接如下：
+
+1. [Creating a chart using Swift Charts](https://developer.apple.com/documentation/charts/creating-a-chart-using-swift-charts)
+2. [Visualizing your app’s dataVisualizing your app’s data](https://developer.apple.com/documentation/charts/visualizing_your_app_s_data)
